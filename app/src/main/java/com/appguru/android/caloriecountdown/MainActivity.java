@@ -29,26 +29,29 @@ public class MainActivity extends AppCompatActivity {
         which is below the tabs, its the tab itself.
          */
 
-        final TabLayout.Tab home = tabLayout.newTab();
-        final TabLayout.Tab inbox = tabLayout.newTab();
-        final TabLayout.Tab star = tabLayout.newTab();
+        final TabLayout.Tab AddFood = tabLayout.newTab();
+        final TabLayout.Tab Macronutrient = tabLayout.newTab();
+        final TabLayout.Tab Progress = tabLayout.newTab();
+        final TabLayout.Tab Profile = tabLayout.newTab();
 
         /*
         Setting Title text for our tabs respectively
          */
 
-        home.setText("Home");
-        inbox.setText("Inbox");
-        star.setText("Star");
+        AddFood.setText("AddFood");
+        Macronutrient.setText("Nutrients");
+        Progress.setText("Progress");
+        Profile.setText("Profile");
 
         /*
         Adding the tab view to our tablayout at appropriate positions
         As I want home at first position I am passing home and 0 as argument to
         the tablayout and like wise for other tabs as well
          */
-        tabLayout.addTab(home, 0);
-        tabLayout.addTab(inbox, 1);
-        tabLayout.addTab(star, 2);
+        tabLayout.addTab(AddFood, 0);
+        tabLayout.addTab(Macronutrient, 1);
+        tabLayout.addTab(Progress, 2);
+        tabLayout.addTab(Profile, 3);
 
         /*
         TabTextColor sets the color for the title of the tabs, passing a ColorStateList here makes
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
          */
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
+        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
 
     }
 

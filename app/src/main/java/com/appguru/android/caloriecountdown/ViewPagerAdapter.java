@@ -16,14 +16,25 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return new AddFoodFragment();    // Which Fragment should be dislpayed by the viewpager for the given position
-        // In my case we are showing up only one fragment in all the three tabs so we are
-        // not worrying about the position and just returning the TabFragment
+
+        switch(position) {
+            case 0:
+                return new AddFoodFragment();
+            case 1:
+                return new MacronutrientFragment();
+            case 2:
+                return new ProgressFragment();
+            case 3:
+                return new ProfileFragment();
+
+        }
+           return null;
     }
 
     @Override
-    public int getCount() {
-        return 3;           // As there are only 3 Tabs
+    public int getCount()
+    {
+        return 4;           // As there are only 3 Tabs
     }
 
 }
