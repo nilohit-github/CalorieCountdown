@@ -26,6 +26,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+
+        <provider
+            android:authorities="@string/content_authority"
+            android:name=".Data.CalorieDetailProvider"
+            android:exported="false"
+            android:syncable="true" />
     </application>
 
 </manifest>

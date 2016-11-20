@@ -45,6 +45,7 @@ public class FoodContract {
         public static final String COLUMN_USER_HEIGHT = "height";
         public static final String COLUMN_USER_GOAL = "goal";
         public static final String COLUMN_USER_QUESTION = "security_question";
+        public static final String COLUMN_HAS_PASSWORD = "has_password";
 
 
 
@@ -61,9 +62,6 @@ public class FoodContract {
         }
 
 
-        public static Uri buildProfileUriWithID(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
-        }
 
         public static Uri buildProfileIDURI(String user_id) {
 
@@ -90,6 +88,8 @@ public class FoodContract {
         public static final String COLUMN_FOOD_CARBS = "carbs";
         public static final String COLUMN_FOOD_FAT = "fat";
         public static final String COLUMN_QUANTITY = "quantity";
+
+
 
 
         public static final Uri CONTENT_URI =

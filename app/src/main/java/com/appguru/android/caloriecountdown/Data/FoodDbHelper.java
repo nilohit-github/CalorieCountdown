@@ -46,7 +46,8 @@ public class FoodDbHelper extends SQLiteOpenHelper {
                 FoodContract.ProfileList.COLUMN_USER_WEIGHT + " REAL NOT NULL," +
                 FoodContract.ProfileList.COLUMN_USER_GOAL + " TEXT NOT NULL," +
                 FoodContract.ProfileList.COLUMN_USER_QUESTION + " TEXT NOT NULL," +
-                FoodContract.ProfileList.COLUMN_USER_PASS + " TEXT NOT NULL " +
+                FoodContract.ProfileList.COLUMN_HAS_PASSWORD + " TEXT NOT NULL," +
+                FoodContract.ProfileList.COLUMN_USER_PASS + " TEXT " +
 
                 " );";
 
