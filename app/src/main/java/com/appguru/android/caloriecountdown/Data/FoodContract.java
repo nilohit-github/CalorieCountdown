@@ -56,6 +56,11 @@ public class FoodContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PROFILE;
 
+        public static Uri buildProfileUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+
         public static Uri buildProfileUriWithID(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
