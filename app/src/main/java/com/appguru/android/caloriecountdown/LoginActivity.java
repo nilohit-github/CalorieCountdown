@@ -259,9 +259,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int j = cursor.getCount();
         if(j==0)
         {
-           Toast.makeText(this, "User ID not found.Please sign-up to process :(", Toast.LENGTH_SHORT)
-                    .show();
-            Log.v("login activity", "id not found " );
+            Intent intent = new Intent(this, SignupActivity.class);
+            intent.putExtra(EXTRA_MESSAGE, email);
+            startActivity(intent);
         }
         else {
             cursor.moveToFirst();

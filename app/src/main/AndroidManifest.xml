@@ -28,10 +28,12 @@
         <activity android:name=".MainActivity" />
 
         <provider
-            android:authorities="@string/content_authority"
             android:name=".Data.CalorieDetailProvider"
+            android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="true" />
+
+        <activity android:name=".SignupActivity"></activity>
     </application>
 
 </manifest>

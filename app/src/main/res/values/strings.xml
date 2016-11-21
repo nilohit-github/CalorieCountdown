@@ -19,4 +19,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">This is the macro fragment</string>
     <string name="content_authority">com.appguru.android.caloriecountdown</string>
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
+    <string name="action_create_acct">Create Account</string>
+    <string name="Gender">Gender</string>
+    <string name="Weight">Weight</string>
 </resources>
