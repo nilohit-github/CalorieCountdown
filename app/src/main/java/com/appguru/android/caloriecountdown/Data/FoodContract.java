@@ -45,7 +45,10 @@ public class FoodContract {
         public static final String COLUMN_USER_HEIGHT = "height";
         public static final String COLUMN_USER_GOAL = "goal";
         public static final String COLUMN_USER_QUESTION = "security_question";
+        public static final String COLUMN_USER_ANSWER = "security_answer";
         public static final String COLUMN_HAS_PASSWORD = "has_password";
+        public static final String COLUMN_USER_AGE = "age";
+
 
 
 

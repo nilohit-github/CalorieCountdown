@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class FoodDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     static final String DATABASE_NAME = "food.db";
 
@@ -44,8 +44,10 @@ public class FoodDbHelper extends SQLiteOpenHelper {
                 FoodContract.ProfileList.COLUMN_USER_GENDER + " TEXT NOT NULL," +
                 FoodContract.ProfileList.COLUMN_USER_HEIGHT + " REAL NOT NULL," +
                 FoodContract.ProfileList.COLUMN_USER_WEIGHT + " REAL NOT NULL," +
+                FoodContract.ProfileList.COLUMN_USER_AGE + " INTEGER NOT NULL," +
                 FoodContract.ProfileList.COLUMN_USER_GOAL + " TEXT NOT NULL," +
                 FoodContract.ProfileList.COLUMN_USER_QUESTION + " TEXT NOT NULL," +
+                FoodContract.ProfileList.COLUMN_USER_ANSWER + " TEXT NOT NULL," +
                 FoodContract.ProfileList.COLUMN_HAS_PASSWORD + " TEXT NOT NULL," +
                 FoodContract.ProfileList.COLUMN_USER_PASS + " TEXT " +
 

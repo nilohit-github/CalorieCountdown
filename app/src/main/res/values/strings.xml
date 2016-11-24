@@ -24,4 +24,24 @@
     <string name="action_create_acct">Create Account</string>
     <string name="Gender">Gender</string>
     <string name="Weight">Weight</string>
+    <string name="Height">Height</string>
+    <string name="Age">Age</string>
+    <string name="goal">Goal</string>
+    <string name="radio_LossWeight">LossWeight</string>
+    <string name="radio_MaintainWeight">MaintainWeight</string>
+    <string name="radio_GainWeight">GainWeight</string>
+    <string name="SecurityQ">Security Question</string>
+    <string name="Answer">Answer</string>
+
+    <string name="SecurityQuestion">Choose a country</string>
+
+    <string-array name="question_arrays">
+        <item>What is your favourite tv show ?</item>
+        <item>What city were you born in ?</item>
+        <item>Which was your first car ?</item>
+        <item>What is your favourite food ?</item>
+        <item>Which High school did you attend ?</item>
+
+    </string-array>
+
 </resources>

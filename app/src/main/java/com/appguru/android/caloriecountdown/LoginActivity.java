@@ -47,7 +47,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private String password;
     private String email_returned;
     private String password_returned;
-    private String has_password;
+    private String has_password ="N";
+    private Boolean passed;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -162,6 +163,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
+
             cancel = true;
         }
 
@@ -199,7 +201,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        passed =  password.length() > 4;
+        if(passed){
+            has_password = "Y";
+        }
+        return passed;
     }
 
     /**
@@ -260,7 +266,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if(j==0)
         {
             Intent intent = new Intent(this, SignupActivity.class);
-            intent.putExtra(EXTRA_MESSAGE, email);
+            intent.putExtra("username", email);
+            intent.putExtra("haspass", has_password);
+            if(has_password.equalsIgnoreCase("Y"))
+            {
+                intent.putExtra("password", password);
+            }
+            Log.v("user id",email);
+            Log.v("pass",password);
+            Log.v("has pass",has_password);
             startActivity(intent);
         }
         else {
@@ -273,7 +287,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if(has_password.equalsIgnoreCase("Y")){
                 password_returned =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_PASS)));
                 Log.v("login activity", "cursor values:: pass returned " +password_returned );
-                if(password_returned == password)
+                if(password_returned.equalsIgnoreCase(password))
                 {
                     cursor.close();
                     Intent intent = new Intent(this, MainActivity.class);
@@ -283,7 +297,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 else{
                     Toast.makeText(this, "Login failed:(", Toast.LENGTH_SHORT)
                             .show();
+
+                        mPasswordView.setError(getString(R.string.error_incorrect_password));
+
+                   // Intent intent = new Intent(this, LoginActivity.class);
+
+                    this.recreate();
+                    mLoginFormView.requestFocus();
+                    mPasswordView.setError(getString(R.string.error_invalid_password));
+                    mPasswordView.requestFocus();
+
+
+
+
+
                 }
+            }
+            else {
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra(EXTRA_MESSAGE, email);
+                startActivity(intent);
             }
 
 
@@ -343,7 +376,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+               // finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
