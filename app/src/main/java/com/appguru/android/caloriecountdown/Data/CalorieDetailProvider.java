@@ -94,11 +94,13 @@ public class CalorieDetailProvider extends ContentProvider {
         // Here's the switch statement that, given a URI, will determine what kind of request it is,
         // and query the database accordingly.
         Cursor retCursor;
+        String user_id = FoodContract.FoodEntry.getUSERIDFromUri(uri);
+        Log.v(":::in query before sw ","query"+user_id);
         switch (sUriMatcher.match(uri)) {
             // "weather/*/*"
             case FOOD_WITH_USER_AND_DATE:
             {
-                String user_id = FoodContract.FoodEntry.getUSERIDFromUri(uri);
+                user_id = FoodContract.FoodEntry.getUSERIDFromUri(uri);
                 Long date_field = FoodContract.FoodEntry.getDateFromUri(uri);
                 Log.v("inside user id","query"+user_id);
                 Log.v("inside date_field","query"+Long.toString(date_field));
@@ -117,7 +119,7 @@ public class CalorieDetailProvider extends ContentProvider {
             }
             // "weather/*"
             case FOOD_WITH_USER_ID: {
-                String user_id = FoodContract.FoodEntry.getUSERIDFromUri(uri);
+                user_id = FoodContract.FoodEntry.getUSERIDFromUri(uri);
                 Log.v("inside food with id ","query"+user_id);
                 selection = sFoodByID;
                 selectionArgs = new String[]{user_id};
@@ -134,8 +136,8 @@ public class CalorieDetailProvider extends ContentProvider {
             }
             // "weather"
             case PROFILE_WITH_USER_ID: {
-                String user_id = FoodContract.ProfileList.getProfileIDFromUri(uri);
-                Log.v("inside profile with id ","query"+user_id);
+                user_id = FoodContract.ProfileList.getProfileIDFromUri(uri);
+                Log.v(":::in profile with id ","query"+user_id);
                 selection = sProfileByID;
                 selectionArgs = new String[]{user_id};
                 retCursor = mOpenHelper.getReadableDatabase().query(
@@ -154,6 +156,8 @@ public class CalorieDetailProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        String test = "test";
+        Log.v(":::in profile return ",":::"+test);
         return retCursor;
     }
 

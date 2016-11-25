@@ -7,14 +7,10 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,11 +22,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appguru.android.caloriecountdown.Data.FoodContract;
 
-import static android.Manifest.permission.READ_CONTACTS;
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 /**
@@ -60,7 +54,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+   // private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -101,52 +95,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
 
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //populateAutoComplete();
-            }
-        }
-    }
-
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
+     /*   if (mAuthTask != null) {
             return;
-        }
+        }*/
 
         // Reset errors.
         mEmailView.setError(null);
@@ -186,9 +143,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            Log.v("show progress ", ":::12 "+email );
+          //  mAuthTask = new UserLoginTask(email, password);
+           // mAuthTask.execute((Void) null);
+            Loader<Object> loader = getLoaderManager().getLoader(LOGIN_LOADER);
+
+            if (loader != null)
+                Log.v("show progress ", ":::100 "+email );
+            {
+                getLoaderManager().destroyLoader(LOGIN_LOADER);
+                getLoaderManager().initLoader(LOGIN_LOADER, null, this);
+            }
             getLoaderManager().restartLoader(LOGIN_LOADER, null, this);
+
+
+
+
+
 
 
         }
@@ -216,43 +187,54 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
+        Log.v("show progress ", ":::1 "+email );
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            Log.v("show progress ", ":::2 "+email );
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
+            Log.v("show progress ", ":::3 "+email );
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            Log.v("show progress ", ":::4 "+email );
             mLoginFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
+                    Log.v("show progress ", ":::5 "+email );
                     mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    Log.v("show progress ", ":::6 "+email );
                 }
             });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            Log.v("show progress ", ":::7 "+email );
             mProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
+                    Log.v("show progress ", ":::8 "+email );
                     mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    Log.v("show progress ", ":::9 "+email );
                 }
             });
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            Log.v("show progress ", ":::10 "+email );
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            Log.v("show progress ", ":::11 "+email );
         }
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
+        Log.v("show progress ", ":::13 "+email );
 
-        Uri favMovieUri = FoodContract.ProfileList.buildProfileIDURI(email);
+        Uri AuthenticationUri = FoodContract.ProfileList.buildProfileIDURI(email);
         Log.v("login activity", "inside on create load email:: "+email );
-        Log.v("login activity", "inside on create load "+favMovieUri.toString() );
+        Log.v("login activity", "inside on create load "+AuthenticationUri.toString() );
         return new CursorLoader(this,
-                favMovieUri,
+                AuthenticationUri,
                 null,
                 null,
                 null,
@@ -261,10 +243,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        Log.v("show progress ", ":::14 "+email );
         Log.v("login activity", "inside load finished " );
         int j = cursor.getCount();
         if(j==0)
         {
+            Log.v("show progress ", ":::15 "+email );
             Intent intent = new Intent(this, SignupActivity.class);
             intent.putExtra("username", email);
             intent.putExtra("haspass", has_password);
@@ -279,33 +263,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
         else {
             cursor.moveToFirst();
+            Log.v("show progress ", ":::16 "+email );
 
             email_returned =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_ID)));
             Log.v("login activity", "cursor values:: email returned " +email_returned );
             has_password =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_HAS_PASSWORD)));
             Log.v("login activity", "cursor values:: has password " +has_password );
             if(has_password.equalsIgnoreCase("Y")){
+                Log.v("show progress ", ":::17 "+email );
                 password_returned =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_PASS)));
                 Log.v("login activity", "cursor values:: pass returned " +password_returned );
+                Log.v("show progress ", ":::18 "+email );
                 if(password_returned.equalsIgnoreCase(password))
                 {
+                    Log.v("show progress ", ":::19 "+email );
                     cursor.close();
+                    Log.v("show progress ", ":::20 "+email );
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra(EXTRA_MESSAGE, email);
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(this, "Login failed:(", Toast.LENGTH_SHORT)
-                            .show();
 
-                        mPasswordView.setError(getString(R.string.error_incorrect_password));
-
-                   // Intent intent = new Intent(this, LoginActivity.class);
-
-                    this.recreate();
                     mLoginFormView.requestFocus();
-                    mPasswordView.setError(getString(R.string.error_invalid_password));
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
                     mPasswordView.requestFocus();
+                    this.recreate();
 
 
 
@@ -333,61 +316,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-               // finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
 }
 
