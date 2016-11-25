@@ -99,7 +99,8 @@
                 android:background="#616161"
                 android:gravity="left"
                 android:ems="2"
-                android:inputType="textPersonName" >
+                android:maxLength="3"
+                android:inputType="number" >
 
                 <requestFocus />
             </EditText>
@@ -188,9 +189,10 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/Age"
                     android:background="#616161"
+                    android:maxLength="3"
+                    android:inputType="number"
+                    android:ems="2">
 
-                    android:ems="2"
-                    android:inputType="textPersonName" >
 
                 </EditText>
 
@@ -315,7 +317,10 @@
                     android:layout_toRightOf="@+id/SecurityA"
                     android:background="#616161"
                     android:ems="10"
-                    android:inputType="textPersonName" >
+                    android:maxLength="20"
+
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789">
+
 
                 </EditText>
 

@@ -3,14 +3,14 @@ package com.appguru.android.caloriecountdown;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,7 +30,7 @@ import static android.provider.AlarmClock.EXTRA_MESSAGE;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -146,15 +146,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Log.v("show progress ", ":::12 "+email );
           //  mAuthTask = new UserLoginTask(email, password);
            // mAuthTask.execute((Void) null);
-            Loader<Object> loader = getLoaderManager().getLoader(LOGIN_LOADER);
+            Loader<Object> loader = getSupportLoaderManager().getLoader(LOGIN_LOADER);
 
             if (loader != null)
                 Log.v("show progress ", ":::100 "+email );
             {
-                getLoaderManager().destroyLoader(LOGIN_LOADER);
-                getLoaderManager().initLoader(LOGIN_LOADER, null, this);
+                getSupportLoaderManager().destroyLoader(LOGIN_LOADER);
+                getSupportLoaderManager().initLoader(LOGIN_LOADER, null, this);
             }
-            getLoaderManager().restartLoader(LOGIN_LOADER, null, this);
+            getSupportLoaderManager().restartLoader(LOGIN_LOADER, null, this);
 
 
 
@@ -241,8 +241,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 null);
     }
 
+
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
         Log.v("show progress ", ":::14 "+email );
         Log.v("login activity", "inside load finished " );
         int j = cursor.getCount();
@@ -269,16 +271,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Log.v("login activity", "cursor values:: email returned " +email_returned );
             has_password =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_HAS_PASSWORD)));
             Log.v("login activity", "cursor values:: has password " +has_password );
+            String ans =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_ANSWER)));
+            String goal = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_GOAL)));
+            String gender = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_GENDER)));
+            int age =(cursor.getInt(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_AGE)));
+            float height = (cursor.getFloat(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_HEIGHT)));
+            float weight = (cursor.getFloat(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_WEIGHT)));
+            String ques =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_QUESTION)));
+            Log.v("login activity", "cursor values:::: ans " +ans );
+            Log.v("login activity", "cursor values:::: goal " +goal );
+            Log.v("login activity", "cursor values:::: gender " +gender );
+            Log.v("login activity", "cursor values:::: age " +age );
+            Log.v("login activity", "cursor values:::: height " +height );
+            Log.v("login activity", "cursor values:::: weight " +weight );
+            Log.v("login activity", "cursor values:::: quest " +ques );
+
+
             if(has_password.equalsIgnoreCase("Y")){
                 Log.v("show progress ", ":::17 "+email );
                 password_returned =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_PASS)));
-                Log.v("login activity", "cursor values:: pass returned " +password_returned );
-                Log.v("show progress ", ":::18 "+email );
+                Log.v("login activity", "cursor values:::: pass returned " +password_returned );
+                Log.v("show progress ", "::::18 "+email );
                 if(password_returned.equalsIgnoreCase(password))
                 {
-                    Log.v("show progress ", ":::19 "+email );
+                    Log.v("show progress ", "::::19 "+email );
                     cursor.close();
-                    Log.v("show progress ", ":::20 "+email );
+                    Log.v("show progress ", "::::20 "+email );
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra(EXTRA_MESSAGE, email);
                     startActivity(intent);
@@ -309,10 +327,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //addEmailsToAutoComplete(emails);
     }
 
+    /**
+     * Called when a previously created loader is being reset, and thus
+     * making its data unavailable.  The application should at this point
+     * remove any references it has to the Loader's data.
+     *
+     * @param loader The Loader that is being reset.
+     */
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
+
+
+
+
+
 
 
 
