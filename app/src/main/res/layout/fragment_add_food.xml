@@ -5,14 +5,98 @@
     tools:context=".AddFoodFragment"
     android:background="#212121">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/user_weight"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="This is a add food fragment"
-        android:id="@+id/textView"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:orientation="vertical"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/EnterFood"
+            android:textSize="20sp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="15dp"
+            android:layout_gravity="center"
+
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent"/>
+
+        <EditText
+            android:id="@+id/editTextFood"
+            android:imeOptions="actionSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#616161"
+            android:gravity="left"
+            android:ems="8"
+            android:maxLength="15"
+            android:inputType="text" >
+
+            <requestFocus />
+        </EditText>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/search_food_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/action_search_food"
+
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/button"
+                android:textColor="@color/colorAccent"
+                android:textSize="12sp"
+                />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/CalorieConsumed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/Consumed"
+            android:textSize="15sp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="15dp"
+
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent"/>
+
+
+        <TextView
+            android:id="@+id/CalorieRemaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/Remaining"
+            android:textSize="15sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent"/>
+
+
+
+    </LinearLayout>
 
 
 

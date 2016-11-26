@@ -34,6 +34,10 @@
     <string name="Answer">Answer</string>
 
     <string name="SecurityQuestion">Choose a country</string>
+    <string name="EnterFood">Enter Food Item</string>
+    <string name="action_search_food">search</string>
+    <string name="Consumed">Total calories consumed today</string>
+    <string name="Remaining">Total Calories remaining for today</string>
 
     <string-array name="question_arrays">
         <item>What is your favourite tv show ?</item>
