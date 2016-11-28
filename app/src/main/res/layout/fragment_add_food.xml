@@ -28,6 +28,7 @@
             android:textStyle="bold"
             android:textColor="@color/colorAccent"/>
 
+
         <EditText
             android:id="@+id/editTextFood"
             android:imeOptions="actionSearch"
@@ -39,9 +40,9 @@
             android:ems="8"
             android:maxLength="15"
             android:inputType="text" >
-
             <requestFocus />
         </EditText>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -52,8 +53,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 android:text="@string/action_search_food"
-
                 android:textStyle="bold"
                 android:padding="10dp"
                 android:layout_centerHorizontal="true"
@@ -64,20 +65,28 @@
 
         </RelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height=".8dp"
+            android:layout_margin="15dp"
+            android:background="@color/colorAccent"/>
+
         <TextView
             android:id="@+id/CalorieConsumed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-thin"
             android:gravity="center"
-            android:padding="5dp"
+
             android:text="@string/Consumed"
             android:textSize="15sp"
             android:layout_marginTop="30dp"
+            android:layout_margin="15dp"
             android:layout_marginBottom="15dp"
 
             android:textStyle="bold"
             android:textColor="@color/colorAccent"/>
+
 
 
         <TextView
@@ -86,11 +95,12 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-thin"
             android:gravity="center"
-            android:padding="5dp"
+
             android:text="@string/Remaining"
             android:textSize="15sp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="15dp"
+            android:layout_margin="15dp"
             android:textStyle="bold"
             android:textColor="@color/colorAccent"/>
 

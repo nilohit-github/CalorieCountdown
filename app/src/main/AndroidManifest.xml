@@ -33,7 +33,8 @@
             android:exported="false"
             android:syncable="true" />
 
-        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".DetailFood"></activity>
     </application>
 
 </manifest>

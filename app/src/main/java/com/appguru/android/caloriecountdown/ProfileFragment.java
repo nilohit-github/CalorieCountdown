@@ -1,8 +1,10 @@
 package com.appguru.android.caloriecountdown;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +65,11 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        Intent intent = getActivity().getIntent();
+        String username = intent.getStringExtra("username");
+        Log.v("fragment profile", "user:::::: " +username );
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

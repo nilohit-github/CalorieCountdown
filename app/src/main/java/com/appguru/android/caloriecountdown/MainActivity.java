@@ -5,9 +5,10 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddFoodFragment.Callback {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -92,6 +93,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * DetailFragmentCallback for when an item has been selected.
+     *
+     * @param username
+     * @param foodItem
+     */
+    @Override
+    public void onSearchClick(String username, String foodItem) {
+
+        Intent intent = new Intent(this, SignupActivity.class);
+        intent.putExtra("username", username);
+        intent.putExtra("fooditem", foodItem);
+        Log.v(" main fragment user", "umain:::::: " +username );
+        Log.v(" main fragment food", "ufood:::::: " +foodItem );
+
+      //  startActivity(intent);
+
+    }
 }
 
 

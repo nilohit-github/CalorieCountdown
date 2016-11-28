@@ -298,7 +298,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                     cursor.close();
                     Log.v("show progress ", "::::20 "+email );
                     Intent intent = new Intent(this, MainActivity.class);
-                    intent.putExtra(EXTRA_MESSAGE, email);
+                    intent.putExtra("username", email);
                     startActivity(intent);
                 }
                 else{

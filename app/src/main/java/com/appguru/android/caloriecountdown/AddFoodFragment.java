@@ -1,11 +1,20 @@
 package com.appguru.android.caloriecountdown;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.plus.PlusOneButton;
 
@@ -30,8 +39,23 @@ public class AddFoodFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private PlusOneButton mPlusOneButton;
+    private Button btnDisplay;
+    Boolean internetAvailable;
+    private EditText mEditFood;
+    String searchedFood;
+    String username;
+    CharSequence text = "No network coverage)";
+    Toast toast;
+    View rootView;
 
     private OnFragmentInteractionListener mListener;
+
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onSearchClick(String username,String foodItem);
+    }
 
     public AddFoodFragment() {
         // Required empty public constructor
@@ -62,18 +86,24 @@ public class AddFoodFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_food, container, false);
+        rootView = inflater.inflate(R.layout.fragment_add_food, container, false);
+        Intent intent = getActivity().getIntent();
+        username = intent.getStringExtra("username");
+        Log.v("fragment food", "user:::::: " +username );
+
+        addListenerOnButton();
 
         //Find the +1 button
        // mPlusOneButton = (PlusOneButton) view.findViewById(R.id.plus_one_button);
 
-        return view;
+        return rootView;
     }
 
     @Override
@@ -82,6 +112,40 @@ public class AddFoodFragment extends Fragment {
 
         // Refresh the state of the +1 button each time the activity receives focus.
 //        mPlusOneButton.initialize(PLUS_ONE_URL, PLUS_ONE_REQUEST_CODE);
+    }
+
+
+    public void addListenerOnButton() {
+
+
+
+        btnDisplay = (Button)rootView.findViewById(R.id.search_food_button);
+
+        btnDisplay.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+             internetAvailable =   isNetworkAvailable();
+
+                if(internetAvailable)
+                {
+                    mEditFood = (EditText)rootView.findViewById(R.id.editTextFood);
+                    String searchedFood = mEditFood.getText().toString();
+                    ((Callback) getActivity()).onSearchClick(username,searchedFood);
+                }
+                else
+                {
+                    int duration = Toast.LENGTH_LONG;
+                    toast = Toast.makeText(getContext(), text, duration);
+                    toast.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+
+            }
+        });
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -114,6 +178,16 @@ public class AddFoodFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        boolean isAvailable = false;
+        if (networkInfo != null && networkInfo.isConnected()){
+            isAvailable = true;
+        }
+        return isAvailable;
     }
 
 
