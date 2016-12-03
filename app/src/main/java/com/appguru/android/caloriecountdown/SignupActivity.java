@@ -20,8 +20,6 @@ import android.widget.Toast;
 import com.appguru.android.caloriecountdown.Data.FoodContract;
 import com.appguru.android.caloriecountdown.Utility.Utilities;
 
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
-
 public class SignupActivity extends AppCompatActivity {
 
     private Spinner spinner1;
@@ -194,7 +192,7 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this, "Added to Favorite", Toast.LENGTH_SHORT)
                             .show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra(EXTRA_MESSAGE, username);
+                    intent.putExtra("username", username);
                     startActivity(intent);
 
 

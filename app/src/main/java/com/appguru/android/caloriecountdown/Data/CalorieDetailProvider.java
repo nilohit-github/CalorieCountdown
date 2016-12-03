@@ -76,6 +76,7 @@ public class CalorieDetailProvider extends ContentProvider {
         if (values.containsKey(FoodContract.FoodEntry.COLUMN_DATE)) {
             long dateValue = values.getAsLong(FoodContract.FoodEntry.COLUMN_DATE);
             values.put(FoodContract.FoodEntry.COLUMN_DATE,FoodContract.normalizeDate(dateValue));
+
         }
     }
 
@@ -101,11 +102,12 @@ public class CalorieDetailProvider extends ContentProvider {
             case FOOD_WITH_USER_AND_DATE:
             {
                 user_id = FoodContract.FoodEntry.getUSERIDFromUri(uri);
-                Long date_field = FoodContract.FoodEntry.getDateFromUri(uri);
+                //Long date_field = FoodContract.FoodEntry.getDateFromUri(uri);
+                String date_field  = FoodContract.FoodEntry.getDateFromUri(uri);
                 Log.v("inside user id","query"+user_id);
-                Log.v("inside date_field","query"+Long.toString(date_field));
+                Log.v("inside date_field","query"+date_field);
                 selection = sFoodByIDAndDate;
-                selectionArgs = new String[]{user_id, Long.toString(date_field)};
+                selectionArgs = new String[]{user_id, date_field};
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         FoodContract.FoodEntry.TABLE_NAME,
                         projection,
@@ -193,7 +195,7 @@ public class CalorieDetailProvider extends ContentProvider {
 
         switch (match) {
             case FOOD: {
-                normalizeDate(values);
+              //  normalizeDate(values);
                 long _id = db.insert(FoodContract.FoodEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
                     returnUri = FoodContract.FoodEntry.buildFoodUri(_id);

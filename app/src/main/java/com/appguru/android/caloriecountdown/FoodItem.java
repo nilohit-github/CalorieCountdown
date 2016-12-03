@@ -1,10 +1,13 @@
 package com.appguru.android.caloriecountdown;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by jhani on 11/26/2016.
  */
 
-public class FoodItem {
+public class FoodItem  implements Parcelable {
 
     //constructor
     public FoodItem(){
@@ -16,6 +19,26 @@ public class FoodItem {
     private String foodProtein;
     private String foodCarbs;
     private String foodFat;
+
+    protected FoodItem(Parcel in) {
+        foodName = in.readString();
+        foodCalories = in.readString();
+        foodProtein = in.readString();
+        foodCarbs = in.readString();
+        foodFat = in.readString();
+    }
+
+    public static final Creator<FoodItem> CREATOR = new Creator<FoodItem>() {
+        @Override
+        public FoodItem createFromParcel(Parcel in) {
+            return new FoodItem(in);
+        }
+
+        @Override
+        public FoodItem[] newArray(int size) {
+            return new FoodItem[size];
+        }
+    };
 
     public String getFoodName() {
         return foodName;
@@ -58,7 +81,17 @@ public class FoodItem {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-
-
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(foodName);
+        parcel.writeString(foodCalories);
+        parcel.writeString(foodProtein);
+        parcel.writeString(foodCarbs);
+        parcel.writeString(foodFat);
+    }
 }

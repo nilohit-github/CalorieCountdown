@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class FoodDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     static final String DATABASE_NAME = "food.db";
 
@@ -26,7 +26,7 @@ public class FoodDbHelper extends SQLiteOpenHelper {
                 // Unique keys will be auto-generated
                 FoodContract.FoodEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 FoodContract.FoodEntry.COLUMN_USER_KEY + " TEXT NOT NULL, "+
-                FoodContract.FoodEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
+                FoodContract.FoodEntry.COLUMN_DATE + " TEXT NOT NULL, " +
                 FoodContract.FoodEntry.COLUMN_FOOD_DESC + " TEXT NOT NULL, "+
                 FoodContract.FoodEntry.COLUMN_FOOD_CALORIES + " REAL NOT NULL, "+
                 FoodContract.FoodEntry.COLUMN_FOOD_PROTEIN + " REAL, "+

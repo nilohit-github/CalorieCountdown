@@ -28,7 +28,7 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
     private String mfoodSearched;
     public ArrayList<FoodItem> foodItemArrayList ;
     public FoodAdapter foodAdapter;
-    final String RESULTS = "results";
+    final String HITS = "hits";
 
     private final String LOG_TAG = FetchFood.class.getSimpleName();
 
@@ -53,7 +53,7 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
 
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
-        String reviewJsonStr = null;
+        String foodJsonStr = null;
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         if (mfoodSearched == null) {
@@ -62,26 +62,32 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
         String food_searched = mfoodSearched;
 
         try {
-            final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/movie";
-            final String API_KEY_PARAM = "api_key";
-            String apiKey = BuildConfig.POPULAR_MOVIES_API_KEY;
-            final String REVIEWS = "reviews";
+            final String FOOD_BASE_URL = "https://api.nutritionix.com/v1_1/search/";
+            final String API_KEY_PARAM = "appKey";
+            final String API_ID_PARAM = "appId";
+            final String results = "results";
+            final String resultValue = "0:20";
+            final String fields = "fields";
+            final String fieldsValue = "item_name,brand_name,item_id,nf_calories,nf_total_carbohydrate,nf_sugars,nf_protein,nf_total_fat";
+
+            String apiKey = BuildConfig.FOOD_API_KEY;
+            String apiId = BuildConfig.FOOD_API_ID;
             String reviewJasonStr = null;
 
 
-            Uri builtUri = Uri.parse(MOVIES_BASE_URL).buildUpon()
+            Uri builtUri = Uri.parse(FOOD_BASE_URL).buildUpon()
                     .appendPath(food_searched)
-                    .appendPath(REVIEWS)
+                    .appendQueryParameter(results, resultValue)
+                    .appendQueryParameter(fields ,fieldsValue)
+                    .appendQueryParameter(API_ID_PARAM, apiId)
                     .appendQueryParameter(API_KEY_PARAM, apiKey)
                     .build();
 
             URL url = new URL(builtUri.toString());
-            Log.i(LOG_TAG, "URL: " + url);
-
-
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
+            Log.v("Url...", "URL: " + url);
 
             // Read the input stream into a String
             InputStream inputStream = null;
@@ -111,7 +117,7 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
                 reviewJasonStr = null;
             }
 
-            reviewJsonStr =buffer.toString();
+            foodJsonStr =buffer.toString();
 
 
         } catch (IOException e) {
@@ -131,46 +137,71 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
             }
         }
 
-        Log.d(LOG_TAG, "Movie Review Data fetched");
+        Log.d(LOG_TAG, "Food  Data fetched");
         try {
-            return getReviewDataFromJson(reviewJsonStr);
+            return getReviewDataFromJson(foodJsonStr);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    private ArrayList<FoodItem> getReviewDataFromJson(String moviesJsonStr)
+    private ArrayList<FoodItem> getReviewDataFromJson(String foodJsonStr)
             throws JSONException {
 
-        final String MOVIE_ID = "id";
+        final String food_item = "id";
 
-        final String REVIEW_ID = "id";
-        final String AUTHOR = "author";
-        final String CONTENT = "content";
-        final String URL = "url";
+        final String total_calories = "id";
+        final String total_carbs = "author";
+        final String total_protein = "content";
+        final String total_fat = "url";
         foodItemArrayList.clear();
 
         try {
-            JSONObject moviesJson = new JSONObject(moviesJsonStr);
-            String movie_id = moviesJson.getString(MOVIE_ID);
+            JSONObject moviesJson = new JSONObject(foodJsonStr);
+            //String movie_id = moviesJson.getString(MOVIE_ID);
 
-            JSONArray reviewArray = moviesJson.getJSONArray(RESULTS);
+            JSONArray foodArray = moviesJson.getJSONArray(HITS);
+            ArrayList<String> foodObject = new ArrayList<>();
+            for (int i = 0; i < foodArray.length(); i++) {
 
-            for (int i = 0; i < reviewArray.length(); i++) {
-                JSONObject movieJSONObject = reviewArray.getJSONObject(i);
-                String author;
-                String content;
+
+                JSONObject foodJSONObject = foodArray.getJSONObject(i);
+                String food_name;
+                String food_cal;
+                String food_fat;
+                String food_carb;
+                String food_protein;
+                JSONObject finalJSONObject = foodJSONObject.getJSONObject("fields");
 
                 // Get the JSON object representing the review
 
 
-                author = movieJSONObject.getString("author");
-                content = movieJSONObject.getString("content");
+                food_name = finalJSONObject.getString("item_name");
+                Log.v("Url...", "nf_item_name " + food_name);
+                if(foodObject.contains(food_name))
+                {
+                    continue;
+
+                }
+                food_cal = finalJSONObject.getString("nf_calories");
+                food_fat = finalJSONObject.getString("nf_total_fat");
+                food_carb = finalJSONObject.getString("nf_total_carbohydrate");
+                food_protein = finalJSONObject.getString("nf_protein");
+                //Log.v("Url...", "nf_item_name " + food_name);
+                Log.v("Url...", "nf_calories: " + food_cal);
+                Log.v("Url...", "nf_total_fat: " + food_fat);
+                Log.v("Url...", "nf_total_carbohydrate: " + food_carb);
+                Log.v("Url...", "nf_protein: " + food_protein);
 
                 FoodItem foodItem = new FoodItem();
+                foodItem.setFoodCalories(food_cal);
+                foodItem.setFoodName(food_name);
+                foodItem.setFoodCarbs(food_carb);
+                foodItem.setFoodFat(food_fat);
+                foodItem.setFoodProtein(food_protein);
 
-
+                foodObject.add(food_name);
                 foodItemArrayList.add(foodItem);
             }
 
@@ -180,6 +211,7 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
             e.printStackTrace();
 
         }
+
         return foodItemArrayList;
     }
 
@@ -189,13 +221,14 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
         if(movieReviewArrayList.size()==0)
         {
             int duration = Toast.LENGTH_LONG;
-            text ="Unable to fetch movie reviews,Sorry for the inconvinience";
+            text ="Unable to fetch food items,Sorry for the inconvinience";
             toast = Toast.makeText(mContext, text, duration);
             toast.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
             toast.show();
         }
 
         super.onPostExecute(movieReviewArrayList);
+
         foodAdapter.notifyDataSetChanged();
 
 

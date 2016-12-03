@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_add_food"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.appguru.android.caloriecountdown.AddFoodActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="7"
+
+        android:id="@+id/selected_food"
+        android:textSize="16sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#000000"
+        android:paddingLeft="8dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_vertical"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="7"
+        android:layout_below="@+id/selected_food"
+        android:id="@+id/tot_cal"
+        android:textSize="12sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#000000"
+        android:paddingLeft="8dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_vertical"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tot_cal"
+        android:layout_weight="7"
+        android:id="@+id/tot_fat"
+        android:textSize="12sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#000000"
+        android:paddingLeft="8dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_vertical"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tot_fat"
+        android:layout_weight="7"
+        android:id="@+id/tot_protein"
+        android:textSize="12sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#000000"
+        android:paddingLeft="8dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_vertical"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="7"
+        android:id="@+id/tot_carbs"
+        android:textSize="12sp"
+        android:layout_below="@+id/tot_protein"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#000000"
+        android:paddingLeft="8dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_vertical"
+
+        />
+
+    <RelativeLayout
+        android:id="@+id/food_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/tot_carbs"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/portion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="start"
+            android:padding="5dp"
+            android:text="@string/Quantity"
+            android:layout_marginRight="19dp"
+
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+        <NumberPicker
+            android:id="@+id/np10"
+            android:layout_width="40dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/portion"
+            android:solidColor="#616161"
+            android:soundEffectsEnabled="true"
+            android:background="@color/colorAccent"
+            />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/addFood"
+            style="?android:textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/addFood"
+
+            android:textStyle="bold"
+            android:padding="15dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/food_count"
+            android:background="@drawable/button"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"
+            />
+
+</RelativeLayout>

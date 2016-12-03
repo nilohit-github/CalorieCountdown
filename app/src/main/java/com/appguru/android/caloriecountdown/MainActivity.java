@@ -102,13 +102,12 @@ public class MainActivity extends AppCompatActivity implements AddFoodFragment.C
     @Override
     public void onSearchClick(String username, String foodItem) {
 
-        Intent intent = new Intent(this, SignupActivity.class);
+        Intent intent = new Intent(this, DetailFoodActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("fooditem", foodItem);
         Log.v(" main fragment user", "umain:::::: " +username );
         Log.v(" main fragment food", "ufood:::::: " +foodItem );
-
-      //  startActivity(intent);
+        startActivity(intent);
 
     }
 }

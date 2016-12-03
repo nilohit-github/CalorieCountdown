@@ -34,7 +34,8 @@
             android:syncable="true" />
 
         <activity android:name=".SignupActivity" />
-        <activity android:name=".DetailFood"></activity>
+        <activity android:name=".DetailFoodActivity" />
+        <activity android:name=".AddFoodActivity"></activity>
     </application>
 
 </manifest>

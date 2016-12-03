@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.format.Time;
+import android.util.Log;
 
 /**
  * Created by jhani on 11/13/2016.
@@ -31,6 +32,7 @@ public class FoodContract {
         Time time = new Time();
         time.set(startDate);
         int julianDay = Time.getJulianDay(startDate, time.gmtoff);
+        Log.v("inserted date", "inserted date::" + time.setJulianDay(julianDay));
         return time.setJulianDay(julianDay);
     }
 
@@ -127,8 +129,8 @@ public class FoodContract {
             return uri.getPathSegments().get(1);
         }
 
-        public static long getDateFromUri(Uri uri) {
-            return Long.parseLong(uri.getPathSegments().get(2));
+        public static String getDateFromUri(Uri uri) {
+            return uri.getPathSegments().get(2);
         }
 
 

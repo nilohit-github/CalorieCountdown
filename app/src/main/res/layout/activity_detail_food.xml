@@ -4,10 +4,20 @@
     android:id="@+id/activity_detail_food"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.appguru.android.caloriecountdown.DetailFood">
 
-</RelativeLayout>
+
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.appguru.android.caloriecountdown.DetailFoodActivity">
+
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/listview_food"
+        android:listSelector="@drawable/list_selector"
+        android:orientation="horizontal"
+        android:divider="#b5b5b5"
+        android:dividerHeight="1dp"/>
+
+    </RelativeLayout>

@@ -132,6 +132,8 @@ public class AddFoodFragment extends Fragment {
                 {
                     mEditFood = (EditText)rootView.findViewById(R.id.editTextFood);
                     String searchedFood = mEditFood.getText().toString();
+                    Log.v("search clicked", "name:::::: " +username );
+                    Log.v("search clicked", "food:::::: " +searchedFood );
                     ((Callback) getActivity()).onSearchClick(username,searchedFood);
                 }
                 else
