@@ -14,8 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appguru.android.caloriecountdown.Data.FoodContract;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -41,6 +47,7 @@ public class MacronutrientFragment extends Fragment implements LoaderManager.Loa
     private float totalProteinConsumed;
     private float totalCarbsConsumed;
     private static final int NUTRIENT_LOADER = 0;
+    BarChart chart;
 
 
     private OnFragmentInteractionListener mListener;
@@ -79,8 +86,11 @@ public class MacronutrientFragment extends Fragment implements LoaderManager.Loa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        chart = new BarChart(getContext());
+        View view =(chart);
+
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_macronutrient, container, false);
+       // View view = inflater.inflate(R.layout.fragment_macronutrient, container, false);
         Intent intent = getActivity().getIntent();
         username = intent.getStringExtra("username");
         Log.v("fragment nutrient", "user:::::: " +username );
@@ -94,7 +104,31 @@ public class MacronutrientFragment extends Fragment implements LoaderManager.Loa
         }
         getLoaderManager().restartLoader(NUTRIENT_LOADER, null, this);
 
+
+
         return view;
+
+    }
+
+    private void drawBarChart() {
+
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(totalCarbsConsumed, 0));
+        entries.add(new BarEntry(totalFatConsumed, 1));
+        entries.add(new BarEntry(totalProteinConsumed, 2));
+        //entries.add(new BarEntry(12f, 3));
+        BarDataSet dataset = new BarDataSet(entries, "# Macro-nutrients consumed today(grams)");
+
+        ArrayList<String> labels = new ArrayList<String>();
+        labels.add("Carbohydrates");
+        labels.add("Fat");
+        labels.add("Protein");
+
+
+        BarData data = new BarData(labels, dataset);
+        chart.setData(data);
+        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
+        chart.animateY(5000);
 
     }
 
@@ -159,13 +193,12 @@ public class MacronutrientFragment extends Fragment implements LoaderManager.Loa
                 totalProteinConsumed = totalProteinConsumed+(cursor.getFloat(cursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_PROTEIN)));
                 Log.v("calories consumed ", ":::15 "+totalCarbsConsumed);
 
+
             }
-            //textView1.setText("Total Calories consumed : "+Math.round(tot_calories_consumed));
-            //textView3.setText("Total Calories remaining for today : "+Math.round(tot_calories_remaining));
 
             cursor.close();
+            drawBarChart();
 
-            // Log.v("calories consumed ", ":::15 "+tot_calories);
 
         }
 
