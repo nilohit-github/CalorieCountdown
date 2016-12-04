@@ -1,24 +1,32 @@
 package com.appguru.android.caloriecountdown;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.appguru.android.caloriecountdown.Data.FoodContract;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ProgressFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ProgressFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ProgressFragment extends Fragment {
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+
+
+
+public class ProgressFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -27,6 +35,14 @@ public class ProgressFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private String username;
+    private float total_cal;
+    private static final int PROGRESS_LOADER = 0;
+    ArrayList<Float> mCalList = new ArrayList<Float>();
+   // private List<Float> mCalList ;
+    private int dataSetSize;
+    private LineChart lineChart;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,10 +81,23 @@ public class ProgressFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_progress, container, false);
+        lineChart = new LineChart(getContext());
+        View view =(lineChart);
+       // View view = inflater.inflate(R.layout.fragment_progress, container, false);
         Intent intent = getActivity().getIntent();
-        String username = intent.getStringExtra("username");
+        username = intent.getStringExtra("username");
         Log.v("fragment progress", "user:::::: " +username );
+
+        Loader<Object> loader = getLoaderManager().getLoader(PROGRESS_LOADER);
+
+        if (loader != null)
+
+        {
+            getLoaderManager().destroyLoader(PROGRESS_LOADER);
+            getLoaderManager().initLoader(PROGRESS_LOADER, null, this);
+        }
+        getLoaderManager().restartLoader(PROGRESS_LOADER, null, this);
+
         return view;
     }
 
@@ -87,6 +116,88 @@ public class ProgressFragment extends Fragment {
     }
 
     /**
+     * Instantiate and return a new Loader for the given ID.
+     *
+     * @param id   The ID whose loader is to be created.
+     * @param args Any arguments supplied by the caller.
+     * @return Return a new Loader instance that is ready to start loading.
+     */
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Calendar c = Calendar.getInstance();
+        //System.out.println("Current time => " + c.getTime());
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = df.format(c.getTime());
+        c.add(Calendar.DAY_OF_MONTH, -30);
+        String dateRange = df.format(c.getTime());
+        Log.v("query date", "date+::" + formattedDate);
+        Log.v("query date", "dateRange+::" + dateRange);
+
+        Uri TCalorieSearchUri = FoodContract.FoodEntry.buildFoodUriWithUserIdDateRange(username,formattedDate,dateRange);
+
+        Log.v("login activity", "inside progress create "+TCalorieSearchUri.toString() );
+        return new CursorLoader(getActivity(),
+                TCalorieSearchUri,
+                null,
+                null,
+                null,
+                null);
+    }
+
+
+
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor1) {
+
+        int j = cursor1.getCount();
+        if(j==0)
+        {
+            Log.v("No macro-nutrients ", ":::15 "+"zero call" );
+
+        }
+        else{
+            int day_count =1;
+            while (cursor1.moveToNext()) {
+              // total_cal = (cursor1.getFloat(cursor1.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_CALORIES)));
+                total_cal = (cursor1.getFloat(0));
+                Log.v("calories tot ", ":::yes "+total_cal);
+
+                mCalList.add(total_cal);
+                dataSetSize = mCalList.size();
+                day_count = day_count+1;
+                if(day_count ==30)
+                {
+                    break;
+                }
+
+
+
+            }
+
+            cursor1.close();
+            drawChart();
+            //drawBarChart();
+
+
+        }
+
+    }
+
+    /**
+     * Called when a previously created loader is being reset, and thus
+     * making its data unavailable.  The application should at this point
+     * remove any references it has to the Loader's data.
+     *
+     * @param loader The Loader that is being reset.
+     */
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+    /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
@@ -99,5 +210,25 @@ public class ProgressFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void drawChart() {
+        ArrayList<String> xVals = new ArrayList<>();
+        ArrayList<Entry> yVals = new ArrayList<>();
+
+        for (int i = 0; i < dataSetSize; i++) {
+            xVals.add(i,String.valueOf(i+1));
+            yVals.add(new Entry((mCalList.get(i)),i));
+        }
+
+        LineDataSet dataSet = new LineDataSet(yVals, "Close");
+        LineData lineData = new LineData(xVals, dataSet);
+        lineChart.setDescription("Closing values over time");
+        dataSet.setDrawFilled(true);
+        lineChart.setData(lineData);
+        lineChart.setBackgroundColor(getResources().getColor(R.color.material_blue_lightest));
+        lineChart.animateY(5000);
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
     }
 }

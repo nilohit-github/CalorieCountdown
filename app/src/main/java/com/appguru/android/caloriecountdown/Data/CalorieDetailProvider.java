@@ -24,6 +24,8 @@ public class CalorieDetailProvider extends ContentProvider {
     static final int FOOD = 100;
     static final int FOOD_WITH_USER_ID = 101;
     static final int FOOD_WITH_USER_AND_DATE = 102;
+    static final int FOOD_WITH_USER_AND_DATE_RANGE = 103;
+
     static final int PROFILE = 300;
     static final int PROFILE_WITH_USER_ID = 301;
 
@@ -37,9 +39,15 @@ public class CalorieDetailProvider extends ContentProvider {
     private static final String sProfileByID =
             FoodContract.ProfileList.TABLE_NAME+
                     "." + FoodContract.ProfileList.COLUMN_USER_ID+ " = ? ";
+  //  private static final String sFoodByIDAndDateRange =
+    //        FoodContract.FoodEntry.TABLE_NAME+
+      //              "." + FoodContract.FoodEntry.COLUMN_USER_KEY + " = ? AND " +
+        //            FoodContract.FoodEntry.TABLE_NAME+"."+FoodContract.FoodEntry.COLUMN_DATE + " BETWEEN = ? AND = ? " ;
 
 
-
+    private static final String sFoodByIDAndDateRange =
+            FoodContract.FoodEntry.TABLE_NAME+
+                  "." + FoodContract.FoodEntry.COLUMN_USER_KEY + " = ? ";
 
 
 
@@ -62,6 +70,7 @@ public class CalorieDetailProvider extends ContentProvider {
         matcher.addURI(authority, FoodContract.PATH_FOOD, FOOD); // JUST FOR PLAIN VANILLA INSERT query
         matcher.addURI(authority, FoodContract.PATH_FOOD + "/*", FOOD_WITH_USER_ID);// FOR FOOD QUERY WITH USER ID FOR BUILDING MP CHART
         matcher.addURI(authority, FoodContract.PATH_FOOD + "/*/*", FOOD_WITH_USER_AND_DATE);// QUERY FOR DAILY FOOD CALORIE DETAILS
+        matcher.addURI(authority, FoodContract.PATH_FOOD + "/*/*/*", FOOD_WITH_USER_AND_DATE_RANGE);//
         matcher.addURI(authority, FoodContract.PATH_PROFILE, PROFILE);//JUST FOR PLAIN VANILLA INSERT query
         matcher.addURI(authority, FoodContract.PATH_PROFILE + "/*", PROFILE_WITH_USER_ID);// TO CHECK IF THE USER ALREADY EXIST
 
@@ -91,7 +100,7 @@ public class CalorieDetailProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-                               String sortOrder) {
+                               String sortOrder ) {
         // Here's the switch statement that, given a URI, will determine what kind of request it is,
         // and query the database accordingly.
         Cursor retCursor;
@@ -114,6 +123,33 @@ public class CalorieDetailProvider extends ContentProvider {
                         selection,
                         selectionArgs,
                         null,
+                        null,
+                        sortOrder
+
+                );
+                break;
+            }
+            case FOOD_WITH_USER_AND_DATE_RANGE:
+            {
+                user_id = FoodContract.FoodEntry.getUSERIDFromUri(uri);
+                //Long date_field = FoodContract.FoodEntry.getDateFromUri(uri);
+                String date_field  = FoodContract.FoodEntry.getDateFromUri(uri);
+                String date_field_range  = FoodContract.FoodEntry.getDateRangeFromUri(uri);
+                Log.v("inside user id","query"+user_id);
+                Log.v("inside date_field","startDate::"+date_field);
+                Log.v("inside date_field range","rangeDate::"+date_field_range);
+                selection = sFoodByIDAndDateRange;
+                //selectionArgs = new String[]{user_id, date_field,date_field_range};
+                selectionArgs = new String[]{user_id};
+                sortOrder = FoodContract.FoodEntry.COLUMN_DATE +" ASC";
+
+                projection= new String[]{"sum(" +FoodContract.FoodEntry.COLUMN_FOOD_CALORIES + ")",FoodContract.FoodEntry.COLUMN_DATE};
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        FoodContract.FoodEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        FoodContract.FoodEntry.COLUMN_DATE,
                         null,
                         sortOrder
                 );
@@ -245,4 +281,7 @@ public class CalorieDetailProvider extends ContentProvider {
         }
         return rowsUpdated;
     }
+
+
+
 }

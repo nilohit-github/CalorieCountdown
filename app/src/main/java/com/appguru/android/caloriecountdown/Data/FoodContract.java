@@ -123,6 +123,12 @@ public class FoodContract {
                         .appendPath(formattedDate).build();
         }
 
+        public static Uri buildFoodUriWithUserIdDateRange(String userID, String formattedDate, String dateRange) {
+            return CONTENT_URI.buildUpon().appendPath(userID)
+                    .appendPath(formattedDate).appendPath(dateRange).build();
+        }
+
+
 
 
         public static String getUSERIDFromUri(Uri uri) {
@@ -131,6 +137,10 @@ public class FoodContract {
 
         public static String getDateFromUri(Uri uri) {
             return uri.getPathSegments().get(2);
+        }
+
+        public static String getDateRangeFromUri(Uri uri) {
+            return uri.getPathSegments().get(3);
         }
 
 
