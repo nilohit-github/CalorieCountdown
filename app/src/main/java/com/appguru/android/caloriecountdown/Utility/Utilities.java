@@ -5,6 +5,7 @@ package com.appguru.android.caloriecountdown.Utility;
  */
 
 public class Utilities {
+    private float tot_calories;
 
 
     public float convertHeightToMeter(int feet,int inch){
@@ -19,6 +20,29 @@ public class Utilities {
 
 
     }
+
+    public float getCaloriesRequired(float weight, String userGoal){
+
+
+        switch(userGoal) {
+            case "MaintainWeight":
+                return tot_calories = (float) ((weight*2.20462)*14);
+            case "LoseWeight":
+                return tot_calories = (float) (((weight*2.20462)*14)-500);
+            case "GainWeight":
+                return tot_calories = (float) (((weight*2.20462)*14)+500);
+
+
+        }
+
+        return tot_calories;
+
+
+    }
+
+
+
+
 
 
 

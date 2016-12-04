@@ -61,7 +61,7 @@ public class CalorieDetailProvider extends ContentProvider {
         // For each type of URI you want to add, create a corresponding code.
         matcher.addURI(authority, FoodContract.PATH_FOOD, FOOD); // JUST FOR PLAIN VANILLA INSERT query
         matcher.addURI(authority, FoodContract.PATH_FOOD + "/*", FOOD_WITH_USER_ID);// FOR FOOD QUERY WITH USER ID FOR BUILDING MP CHART
-        matcher.addURI(authority, FoodContract.PATH_FOOD + "/*/#", FOOD_WITH_USER_AND_DATE);// QUERY FOR DAILY FOOD CALORIE DETAILS
+        matcher.addURI(authority, FoodContract.PATH_FOOD + "/*/*", FOOD_WITH_USER_AND_DATE);// QUERY FOR DAILY FOOD CALORIE DETAILS
         matcher.addURI(authority, FoodContract.PATH_PROFILE, PROFILE);//JUST FOR PLAIN VANILLA INSERT query
         matcher.addURI(authority, FoodContract.PATH_PROFILE + "/*", PROFILE_WITH_USER_ID);// TO CHECK IF THE USER ALREADY EXIST
 

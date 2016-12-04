@@ -25,8 +25,6 @@ import android.widget.TextView;
 
 import com.appguru.android.caloriecountdown.Data.FoodContract;
 
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
-
 /**
  * A login screen that offers login via email/password.
  */
@@ -267,6 +265,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             cursor.moveToFirst();
             Log.v("show progress ", ":::16 "+email );
 
+
             email_returned =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_ID)));
             Log.v("login activity", "cursor values:: email returned " +email_returned );
             has_password =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_HAS_PASSWORD)));
@@ -299,6 +298,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                     Log.v("show progress ", "::::20 "+email );
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra("username", email);
+                    intent.putExtra("goal", goal);
+                    intent.putExtra("weight",weight);
+                    intent.putExtra("Source", "fromLogin");
+
                     startActivity(intent);
                 }
                 else{
@@ -316,7 +319,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             }
             else {
                 Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(EXTRA_MESSAGE, email);
+                intent.putExtra("username", email);
+                intent.putExtra("goal", goal);
+                intent.putExtra("weight", weight);
+                intent.putExtra("Source", "fromLogin");
                 startActivity(intent);
             }
 

@@ -2,11 +2,16 @@ package com.appguru.android.caloriecountdown;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,9 +19,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.appguru.android.caloriecountdown.Data.FoodContract;
+import com.appguru.android.caloriecountdown.Utility.Utilities;
 import com.google.android.gms.plus.PlusOneButton;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * A fragment with a Google +1 button.
@@ -26,7 +37,7 @@ import com.google.android.gms.plus.PlusOneButton;
  * Use the {@link AddFoodFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddFoodFragment extends Fragment {
+public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -38,17 +49,114 @@ public class AddFoodFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private static final int CALORIE_LOADER = 0;
     private PlusOneButton mPlusOneButton;
     private Button btnDisplay;
-    Boolean internetAvailable;
+    private Boolean internetAvailable;
     private EditText mEditFood;
-    String searchedFood;
-    String username;
-    CharSequence text = "No network coverage)";
-    Toast toast;
-    View rootView;
-
+    private String searchedFood;
+    private String username;
+    private String goal;
+    private float weight;
+    private float tot_calories;
+    private CharSequence text = "No network coverage)";
+    private Toast toast;
+    private View rootView;
+    private TextView textView1;
+    private TextView textView2;
+    private TextView textView3;
     private OnFragmentInteractionListener mListener;
+    private float tot_calories_consumed;
+    private float tot_calories_remaining;
+    private String activity;
+    SharedPreferences sharedpreferences;
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String Name = "nameKey";
+    public static final String WeightKey = "weightKey";
+    public static final String GoalKey = "goalKey";
+
+
+    /**
+     * Instantiate and return a new Loader for the given ID.
+     *
+     * @param id   The ID whose loader is to be created.
+     * @param args Any arguments supplied by the caller.
+     * @return Return a new Loader instance that is ready to start loading.
+     */
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        Calendar c = Calendar.getInstance();
+        //System.out.println("Current time => " + c.getTime());
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = df.format(c.getTime());
+        Log.v("query date", "date+::" + formattedDate);
+
+        Uri CaloriSearchUri = FoodContract.FoodEntry.buildFoodUriWithUserIdDate(username,formattedDate);
+
+        Log.v("login activity", "inside on create load "+CaloriSearchUri.toString() );
+        return new CursorLoader(getActivity(),
+                CaloriSearchUri,
+                null,
+                null,
+                null,
+                null);
+    }
+
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+
+
+        textView1 = (TextView)getActivity().findViewById(R.id.CalorieConsumed);
+        textView2 = (TextView)getActivity().findViewById(R.id.CaloriesRequired);
+        textView3 = (TextView)getActivity().findViewById(R.id.CalorieRemaining);
+        textView2.setText("Your total calorie requirement : "+Math.round(tot_calories));
+
+        int j = cursor.getCount();
+        if(j==0)
+        {
+            Log.v("No calories consumed ", ":::15 "+"zero call" );
+
+            textView1.setText("Total Calories consumed : "+0);
+            textView3.setText("Total Calories remaining for today : "+Math.round(tot_calories));
+
+        }
+        else{
+
+            while (cursor.moveToNext()) {
+               tot_calories_consumed = tot_calories_consumed+(cursor.getFloat(cursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_CALORIES)));
+                Log.v("calories consumed ", ":::15 "+tot_calories);
+                tot_calories_remaining = tot_calories - tot_calories_consumed;
+            }
+            textView1.setText("Total Calories consumed : "+Math.round(tot_calories_consumed));
+            textView3.setText("Total Calories remaining for today : "+Math.round(tot_calories_remaining));
+
+            cursor.close();
+
+           // Log.v("calories consumed ", ":::15 "+tot_calories);
+
+        }
+
+
+
+
+
+    }
+
+    /**
+     * Called when a previously created loader is being reset, and thus
+     * making its data unavailable.  The application should at this point
+     * remove any references it has to the Loader's data.
+     *
+     * @param loader The Loader that is being reset.
+     */
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
 
     public interface Callback {
         /**
@@ -96,7 +204,35 @@ public class AddFoodFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_add_food, container, false);
         Intent intent = getActivity().getIntent();
         username = intent.getStringExtra("username");
-        Log.v("fragment food", "user:::::: " +username );
+        activity = intent.getStringExtra("Source");
+        sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        if(activity.equalsIgnoreCase("fromLogin"))
+        {
+            goal = intent.getStringExtra("goal");
+            weight = intent.getFloatExtra("weight",1);
+
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString(Name, username);
+            editor.putFloat(WeightKey, weight);
+            editor.putString(GoalKey, goal);
+            editor.commit();
+        }
+
+        Utilities utilities = new Utilities();
+        tot_calories =utilities.getCaloriesRequired(sharedpreferences.getFloat(WeightKey,0),sharedpreferences.getString(GoalKey,""));
+        Log.v("fragment food", "tCal:::::: " +tot_calories );
+        Log.v("fragment food", "tgoal:::::: " +sharedpreferences.getString(GoalKey,"") );
+
+        Loader<Object> loader = getLoaderManager().getLoader(CALORIE_LOADER);
+
+        if (loader != null)
+
+        {
+            getLoaderManager().destroyLoader(CALORIE_LOADER);
+            getLoaderManager().initLoader(CALORIE_LOADER, null, this);
+        }
+        getLoaderManager().restartLoader(CALORIE_LOADER, null, this);
+
 
         addListenerOnButton();
 

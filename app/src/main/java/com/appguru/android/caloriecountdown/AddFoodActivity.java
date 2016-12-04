@@ -135,6 +135,7 @@ public class AddFoodActivity extends AppCompatActivity {
                             .show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("username", username);
+                    intent.putExtra("Source", "fromAddFoodActivity");
                     startActivity(intent);
 
 

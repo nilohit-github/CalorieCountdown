@@ -27,7 +27,7 @@
     <string name="Height">Height</string>
     <string name="Age">Age</string>
     <string name="goal">Goal</string>
-    <string name="radio_LossWeight">LossWeight</string>
+    <string name="radio_LossWeight">LoseWeight</string>
     <string name="radio_MaintainWeight">MaintainWeight</string>
     <string name="radio_GainWeight">GainWeight</string>
     <string name="SecurityQ">Security Question</string>
@@ -41,6 +41,7 @@
     <string name="portion">Portion</string>
     <string name="Quantity">Quantity</string>
     <string name="addFood">Add Food</string>
+    <string name="Required">Your total calorie requirement: </string>
 
     <string-array name="question_arrays">
         <item>What is your favourite tv show ?</item>

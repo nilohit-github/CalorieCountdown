@@ -118,9 +118,9 @@ public class FoodContract {
         }
 
 
-        public static Uri buildFoodUriWithUserIdDate(String userID, long date) {
+        public static Uri buildFoodUriWithUserIdDate(String userID, String formattedDate) {
                 return CONTENT_URI.buildUpon().appendPath(userID)
-                        .appendPath(Long.toString(normalizeDate(date))).build();
+                        .appendPath(formattedDate).build();
         }
 
 
