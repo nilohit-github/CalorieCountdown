@@ -42,6 +42,7 @@
     <string name="Quantity">Quantity</string>
     <string name="addFood">Add Food</string>
     <string name="Required">Your total calorie requirement: </string>
+    <string name="action_update_profile">Update Profile</string>
 
     <string-array name="question_arrays">
         <item>What is your favourite tv show ?</item>

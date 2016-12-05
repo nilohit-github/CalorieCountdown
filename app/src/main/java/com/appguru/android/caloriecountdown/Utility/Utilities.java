@@ -40,6 +40,15 @@ public class Utilities {
 
     }
 
+    public int convertHeightToFeet(float height){
+
+        int height_in_feet = (int)(height * 0.0328084);
+
+        return height_in_feet;
+
+
+    }
+
 
 
 

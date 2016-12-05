@@ -1,5 +1,6 @@
 package com.appguru.android.caloriecountdown;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,12 +13,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.appguru.android.caloriecountdown.Data.FoodContract;
+import com.appguru.android.caloriecountdown.Utility.Utilities;
 
 
 /**
@@ -46,6 +50,21 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     private RadioButton radioSexButton;
     private RadioGroup radioGoalGroup;
     private RadioButton radioGoalButton;
+    private Integer Feet;
+    private Integer Inch;
+    private NumberPicker np10;
+    private NumberPicker np11;
+    private Button btnDisplay;
+    private boolean cancel = false;
+    private float mHeight;
+    private float mWeight;
+    private Integer mAge;
+    private View focusView = null;
+    private View rootview;
+    private int height_in_feet;
+    private int height_in_inch;
+    private int mRowsUpdated;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -84,9 +103,37 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        rootview = inflater.inflate(R.layout.fragment_profile, container, false);
         Intent intent = getActivity().getIntent();
         username = intent.getStringExtra("username");
+        np10 = (NumberPicker)rootview.findViewById(R.id.npFeet);
+        np11 = (NumberPicker)rootview.findViewById(R.id.npInch);
+
+        np10.setMinValue(1);
+        //Specify the maximum value/number of NumberPicker
+        np10.setMaxValue(10);
+
+        np11.setMinValue(0);
+        //Specify the maximum value/number of NumberPicker
+        np11.setMaxValue(11);
+        //Gets whether the selector wheel wraps when reaching the min/max value.
+        np10.setWrapSelectorWheel(true);
+        np11.setWrapSelectorWheel(true);
+
+        np10.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+                //Display the newly selected number from picker
+                Feet = newVal;
+            }
+        });
+        np11.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+                //Display the newly selected number from picker
+                Inch = newVal;
+            }
+        });
         Log.v("fragment profile", "user:::::: " +username );
 
 
@@ -100,8 +147,10 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         }
         getLoaderManager().restartLoader(PROFILE_LOADER, null, this);
 
+        addListenerOnButton();
 
-        return view;
+
+        return rootview;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -176,7 +225,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             Log.v("login activity", "cursor values:::: quest " + ques);
             ediTextWeight = (EditText) getActivity().findViewById(R.id.editTextWt);
             editTextAge = (EditText) getActivity().findViewById(R.id.editTextAge);
-            editTextAnswer = (EditText) getActivity().findViewById(R.id.editTextAns);
+            //editTextAnswer = (EditText) getActivity().findViewById(R.id.editTextAns);
             ediTextWeight.setText(String.valueOf(weight_final));
             //editTextAnswer.setText(ans);
             editTextAge.setText(String.valueOf(age));
@@ -197,6 +246,17 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 radioGoalGroup.check(R.id.rLoseWeight);
             else
                 radioGoalGroup.check(R.id.rGainWeight);
+
+            Utilities utilities = new Utilities();
+
+            height_in_feet = utilities.convertHeightToFeet(height);
+            height_in_inch = (int)Math.round((height - (height_in_feet *30.48))* 0.39370079) ;
+            Log.v("profile", "hight:::: height " + height);
+            Log.v("profile", "hight in feet " + height_in_feet);
+            Log.v("profile", "hight in inch " + height_in_inch);
+
+            np10.setValue(height_in_feet);
+            np11.setValue(height_in_inch);
 
 
 
@@ -229,5 +289,119 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void addListenerOnButton() {
+
+
+        radioSexGroup = (RadioGroup)getActivity().findViewById(R.id.rSex);
+        radioGoalGroup = (RadioGroup)getActivity().findViewById(R.id.rGoal);
+
+        btnDisplay = (Button)rootview.findViewById(R.id.update_profile);
+
+        btnDisplay.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // get selected radio button from radioGroup
+                int selectedId = radioSexGroup.getCheckedRadioButtonId();
+                int selectedId2 = radioGoalGroup.getCheckedRadioButtonId();
+                // find the radiobutton by returned id
+                radioSexButton = (RadioButton)getActivity().findViewById(selectedId);
+                radioGoalButton = (RadioButton)getActivity().findViewById(selectedId2);
+                ediTextWeight = (EditText) getActivity().findViewById(R.id.editTextWt);
+                editTextAge = (EditText) getActivity().findViewById(R.id.editTextAge);
+
+                cancel = performValidation();
+
+
+                if (!cancel) {
+
+                    Utilities utilities = new Utilities();
+                    if(Inch == null)
+                    {
+                        Inch =height_in_inch;
+                    }
+                    if(Feet == null)
+                    {
+                        Feet =height_in_feet;
+                    }
+                    mHeight = utilities.convertHeightToMeter(Feet, Inch);
+                    mAge = Integer.parseInt(editTextAge.getText().toString());
+                    mWeight = Float.parseFloat(ediTextWeight.getText().toString());
+
+                    Log.v("user id", username);
+//                Log.v("pass",password);
+
+                    Log.v("profile Feet", Feet.toString());
+                    Log.v("profile Inch", Inch.toString());
+                    Log.v("profile height", String.valueOf(mHeight));
+                    Log.v("profile SEX", radioSexButton.getText().toString());
+                    Log.v("profile goal", radioGoalButton.getText().toString());
+
+                    Log.v("profile Age", mAge.toString());
+
+                    Log.v("profile weight", String.valueOf(mWeight));
+
+
+
+                    ContentValues values = new ContentValues();
+
+                    values.put(FoodContract.ProfileList.COLUMN_USER_GENDER, radioSexButton.getText().toString());
+                    values.put(FoodContract.ProfileList.COLUMN_USER_HEIGHT, mHeight);
+                    values.put(FoodContract.ProfileList.COLUMN_USER_WEIGHT, mWeight);
+                    values.put(FoodContract.ProfileList.COLUMN_USER_AGE, mAge);
+                    values.put(FoodContract.ProfileList.COLUMN_USER_GOAL, radioGoalButton.getText().toString());
+
+
+                    Uri updateUri = FoodContract.ProfileList.buildProfileIDURI(username);
+                    mRowsUpdated = getContext().getContentResolver().update(
+                            updateUri,
+                            values  ,
+                            FoodContract.ProfileList.COLUMN_USER_ID + " = ?",
+                            new String[]{username});
+
+
+
+                  //  Log.v("inserted uri", "value::" + insertedUri.toString());
+                    Toast.makeText(getActivity(), "Added to Favorite", Toast.LENGTH_SHORT)
+                            .show();
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("username", username);
+                    intent.putExtra("goal",radioGoalButton.getText().toString() );
+                    intent.putExtra("weight",mWeight);
+                    intent.putExtra("Source", "fromProfile");
+
+                    startActivity(intent);
+
+
+                }
+            }
+        });
+
+
+    }
+
+    private boolean performValidation() {
+
+        cancel = false;
+        if ((ediTextWeight.getText().toString()).matches("")) {
+            ediTextWeight.setError("weight is empty");
+            focusView = ediTextWeight;
+            cancel = true;
+        }
+
+        else if ((editTextAge.getText().toString().matches(""))) {
+            editTextAge.setError("Age is empty");
+            focusView = editTextAge;
+            cancel = true;
+        }
+
+        else
+            return false;
+
+
+        return cancel;
     }
 }

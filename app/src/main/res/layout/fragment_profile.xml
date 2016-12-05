@@ -118,7 +118,7 @@
                     android:layout_marginBottom="10dp">
 
                     <TextView
-                        android:id="@+id/height"
+                        android:id="@+id/profile_height"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-thin"
@@ -126,19 +126,18 @@
                         android:padding="5dp"
                         android:text="@string/Height"
                         android:layout_marginRight="19dp"
-
                         android:layout_centerVertical="true"
                         android:textColor="@color/colorAccent"
                         android:textStyle="bold"
                         android:textSize="20sp" />
 
                     <NumberPicker
-                        android:id="@+id/np1"
+                        android:id="@+id/npFeet"
                         android:layout_width="wrap_content"
                         android:layout_height="100dp"
                         android:layout_marginRight="5dp"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/height"
+                        android:layout_toRightOf="@id/profile_height"
                         android:solidColor="#616161"
                         android:soundEffectsEnabled="true"
                         android:background="@color/colorAccent"
@@ -147,11 +146,11 @@
 
 
                     <NumberPicker
-                        android:id="@+id/np2"
+                        android:id="@+id/npInch"
                         android:layout_width="wrap_content"
                         android:layout_height="100dp"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/np1"
+
+                        android:layout_toRightOf="@id/npFeet"
                         android:soundEffectsEnabled="true"
                         android:background="@color/colorAccent"
                         android:solidColor="#616161"
@@ -256,90 +255,17 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/SecurityQs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="10dp">
-
-                    <TextView
-                        android:id="@+id/SecurityQ"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:gravity="start"
-                        android:padding="5dp"
-
-                        android:text="@string/SecurityQ"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-thin"
-                        android:textSize="20sp" />
-
-                    <Spinner
-                        android:id="@+id/spinner1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:entries="@array/question_arrays"
-                        android:prompt="@string/SecurityQuestion"
-                        android:background="#616161"/>
-
-
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/SecurityAns"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="10dp">
-
-                    <TextView
-                        android:id="@+id/SecurityA"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:gravity="start"
-                        android:padding="5dp"
-                        android:text="@string/Answer"
-                        android:layout_marginRight="15dp"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-thin"
-                        android:textSize="20sp" />
-
-                    <EditText
-                        android:id="@+id/editTextAns"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/SecurityA"
-                        android:background="#616161"
-                        android:ems="10"
-                        android:maxLength="20"
-
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789">
-
-
-                    </EditText>
-
-
-                </LinearLayout>
-
-
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <Button
-                        android:id="@+id/email_sign_in_button"
+                        android:id="@+id/update_profile"
                         style="?android:textAppearanceSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:text="@string/action_create_acct"
+                        android:text="@string/action_update_profile"
 
                         android:textStyle="bold"
                         android:padding="15dp"

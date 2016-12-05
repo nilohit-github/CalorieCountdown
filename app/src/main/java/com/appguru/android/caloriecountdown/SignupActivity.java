@@ -41,8 +41,8 @@ public class SignupActivity extends AppCompatActivity {
     private float weight;
     private Integer age;
     private String answer;
-    boolean cancel = false;
-    View focusView = null;
+    private boolean cancel = false;
+    private View focusView = null;
 
 
 
@@ -79,21 +79,6 @@ public class SignupActivity extends AppCompatActivity {
         //Gets whether the selector wheel wraps when reaching the min/max value.
         np1.setWrapSelectorWheel(true);
         np2.setWrapSelectorWheel(true);
-
-        np1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                //Display the newly selected number from picker
-
-            }
-        });
-        np2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                //Display the newly selected number from picker
-
-            }
-        });
 
         np1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override

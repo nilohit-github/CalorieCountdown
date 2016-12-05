@@ -206,7 +206,7 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
         username = intent.getStringExtra("username");
         activity = intent.getStringExtra("Source");
         sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        if(activity.equalsIgnoreCase("fromLogin"))
+        if(activity.equalsIgnoreCase("fromLogin") || activity.equalsIgnoreCase("fromProfile") )
         {
             goal = intent.getStringExtra("goal");
             weight = intent.getFloatExtra("weight",1);

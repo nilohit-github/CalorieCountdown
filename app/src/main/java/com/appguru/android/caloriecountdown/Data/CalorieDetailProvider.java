@@ -265,10 +265,12 @@ public class CalorieDetailProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         int rowsUpdated;
+        String user_id = FoodContract.ProfileList.getProfileIDFromUri(uri);
 
         switch (match) {
             case PROFILE_WITH_USER_ID:
-
+                selection = sProfileByID;
+                selectionArgs = new String[]{user_id};
                 rowsUpdated = db.update(FoodContract.ProfileList.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
