@@ -18,6 +18,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,9 +34,14 @@
             android:exported="false"
             android:syncable="true" />
 
-        <activity android:name=".SignupActivity" />
+        <activity android:name=".SignupActivity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".DetailFoodActivity" />
-        <activity android:name=".AddFoodActivity"></activity>
+        <activity android:name=".AddFoodActivity" />
+        <activity android:name=".ForgotActivity"
+            android:label="Forgot Password"
+                  android:theme="@style/NoActionBar">
+        </activity>
     </application>
 
 </manifest>

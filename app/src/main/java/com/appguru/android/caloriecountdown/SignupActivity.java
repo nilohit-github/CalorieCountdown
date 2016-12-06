@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,6 +52,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_signup);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NumberPicker np1 = (NumberPicker) findViewById(R.id.np1);
         NumberPicker np2 = (NumberPicker) findViewById(R.id.np2);
         Intent intent = getIntent();
@@ -178,6 +180,9 @@ public class SignupActivity extends AppCompatActivity {
                             .show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("username", username);
+                    intent.putExtra("goal", radioGoalButton.getText().toString());
+                    intent.putExtra("weight", weight);
+                    intent.putExtra("Source", "fromSignup");
                     startActivity(intent);
 
 
@@ -234,5 +239,22 @@ public class SignupActivity extends AppCompatActivity {
 
 
         return cancel;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        super.onBackPressed();
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

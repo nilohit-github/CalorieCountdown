@@ -74,6 +74,8 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
     public static final String Name = "nameKey";
     public static final String WeightKey = "weightKey";
     public static final String GoalKey = "goalKey";
+    private boolean emptyCheck = false;
+    private View focusView = null;
 
 
     /**
@@ -206,7 +208,7 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
         username = intent.getStringExtra("username");
         activity = intent.getStringExtra("Source");
         sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        if(activity.equalsIgnoreCase("fromLogin") || activity.equalsIgnoreCase("fromProfile") )
+        if(activity.equalsIgnoreCase("fromLogin") || activity.equalsIgnoreCase("fromProfile") || activity.equalsIgnoreCase("fromSignup") )
         {
             goal = intent.getStringExtra("goal");
             weight = intent.getFloatExtra("weight",1);
@@ -263,22 +265,27 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
             public void onClick(View v) {
 
              internetAvailable =   isNetworkAvailable();
+                mEditFood = (EditText)rootView.findViewById(R.id.editTextFood);
+                emptyCheck =performValidation();
 
-                if(internetAvailable)
+              if(!emptyCheck)
+
+              {
+                if(internetAvailable  )
                 {
-                    mEditFood = (EditText)rootView.findViewById(R.id.editTextFood);
+                   // mEditFood = (EditText)rootView.findViewById(R.id.editTextFood);
                     String searchedFood = mEditFood.getText().toString();
                     Log.v("search clicked", "name:::::: " +username );
                     Log.v("search clicked", "food:::::: " +searchedFood );
                     ((Callback) getActivity()).onSearchClick(username,searchedFood);
                 }
-                else
-                {
+                else {
                     int duration = Toast.LENGTH_LONG;
                     toast = Toast.makeText(getContext(), text, duration);
-                    toast.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
+                    toast.setGravity(Gravity.CENTER | Gravity.CENTER, 0, 0);
                     toast.show();
                 }
+              }
 
             }
         });
@@ -326,6 +333,17 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
             isAvailable = true;
         }
         return isAvailable;
+    }
+
+    private boolean performValidation() {
+
+        emptyCheck = false;
+        if ((mEditFood.getText().toString()).matches("")) {
+            mEditFood.setError("food is empty");
+            focusView = mEditFood;
+            emptyCheck = true;
+        }
+        return emptyCheck;
     }
 
 

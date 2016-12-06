@@ -1,6 +1,7 @@
 package com.appguru.android.caloriecountdown;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -29,6 +30,7 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
     public ArrayList<FoodItem> foodItemArrayList ;
     public FoodAdapter foodAdapter;
     final String HITS = "hits";
+    private String mUsername;
 
     private final String LOG_TAG = FetchFood.class.getSimpleName();
 
@@ -36,11 +38,12 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
     Toast toast;
     CharSequence text;
 
-    public FetchFood(Context context, String foodSearched,ArrayList foodItemArrayList,FoodAdapter foodAdapter) {
+    public FetchFood(Context context, String foodSearched,ArrayList foodItemArrayList,FoodAdapter foodAdapter ,String username) {
         mContext = context;
         mfoodSearched =foodSearched;
         this.foodItemArrayList = foodItemArrayList;
         this.foodAdapter= foodAdapter;
+        this.mUsername = username;
 
     }
 
@@ -216,18 +219,24 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
     }
 
     @Override
-    protected void onPostExecute(ArrayList<FoodItem> movieReviewArrayList) {
+    protected void onPostExecute(ArrayList<FoodItem> foodArrayList) {
 
-        if(movieReviewArrayList.size()==0)
+        if(foodArrayList.size()==0)
         {
             int duration = Toast.LENGTH_LONG;
             text ="Unable to fetch food items,Sorry for the inconvinience";
             toast = Toast.makeText(mContext, text, duration);
             toast.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
             toast.show();
+            Intent intent = new Intent(mContext, MainActivity.class);
+            intent.putExtra("Source", "fromJava");
+            intent.putExtra("username",mUsername);
+            mContext.startActivity(intent);
+
+
         }
 
-        super.onPostExecute(movieReviewArrayList);
+        super.onPostExecute(foodArrayList);
 
         foodAdapter.notifyDataSetChanged();
 

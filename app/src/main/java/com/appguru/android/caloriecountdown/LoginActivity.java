@@ -59,6 +59,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private TextView mForgotPassView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,47 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+
+        mForgotPassView = (TextView) findViewById(R.id.forgot_password);
+        mForgotPassView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptReset();
+            }
+        });
+
+    }
+
+
+    private void attemptReset()
+    {
+        mEmailView.setError(null);
+        email = mEmailView.getText().toString();
+        boolean cancel = false;
+        View focusView = null;
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
+            cancel = true;
+        } else if (!isEmailValid(email)) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
+            cancel = true;
+        }
+        if (cancel) {
+            // There was no email provided
+            focusView.requestFocus();
+        } else {
+            Intent intent = new Intent(this, ForgotActivity.class);
+            intent.putExtra("username", email);
+            Log.v("user id",email);
+            startActivity(intent);
+
+
+        }
+
+
     }
 
 
@@ -344,14 +386,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
-
-
-
-
-
-
-
-
 
 
 }
