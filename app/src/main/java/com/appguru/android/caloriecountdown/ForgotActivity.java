@@ -29,7 +29,7 @@ public class ForgotActivity extends AppCompatActivity implements LoaderManager.L
         setContentView(R.layout.activity_forgot);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         username= intent.getStringExtra("username");

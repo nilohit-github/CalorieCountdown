@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -237,6 +238,7 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
 
 
         addListenerOnButton();
+        addListenerOnImageClick();
 
         //Find the +1 button
        // mPlusOneButton = (PlusOneButton) view.findViewById(R.id.plus_one_button);
@@ -293,6 +295,19 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
 
     }
 
+
+    public void addListenerOnImageClick() {
+        ImageView img = (ImageView)rootView.findViewById(R.id.attribution);
+        img.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("https://www.nutritionix.com/business/api"));
+                startActivity(intent);
+            }
+        });
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
