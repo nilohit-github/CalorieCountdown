@@ -1,5 +1,7 @@
 package com.appguru.android.caloriecountdown;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,7 +12,12 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +29,20 @@ public class ForgotActivity extends AppCompatActivity implements LoaderManager.L
     private static final int FORGOT_LOADER = 0;
     private String contains_password ="N";
     private TextView textViewQ;
+    private LinearLayout container;
+    private Button btnDisplay;
+    private Button btnSave;
+    private String answer;
+    private boolean cancel = false;
+    private View focusView = null;
+    private EditText mEditAnswer;
+    private EditText mPassNew;
+    private String newPassword;
+    private String dbAns;
+    private boolean passed ;
+    private int mRowsUpdated;
+    private boolean btn1Clicked  = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +63,73 @@ public class ForgotActivity extends AppCompatActivity implements LoaderManager.L
             getSupportLoaderManager().initLoader(FORGOT_LOADER, null, this);
         }
         getSupportLoaderManager().restartLoader(FORGOT_LOADER, null, this);
+       // addListenerOnButton();
+
+        //add button logic here not working through a seperate function
+
+        btnDisplay = (Button) findViewById(R.id.security_ans_submit_button);
+
+        btnDisplay.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+                mEditAnswer = (EditText) findViewById(R.id.SecurityAnswer);
+
+
+                cancel = performValidation();
+
+
+                if (!cancel) {
+                    btnDisplay.setEnabled(false);
+                    answer = mEditAnswer.getText().toString();
+
+                    Log.v("user id", username);
+                    container = (LinearLayout) findViewById(R.id.container);
+                    LayoutInflater layoutInflate = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View view = layoutInflate.inflate(R.layout.reset_password, null);
+                    container.addView(view);
+                    Button clickButton = (Button) findViewById(R.id.save_button);
+                    clickButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            mPassNew = (EditText) findViewById(R.id.password_new);
+
+
+                            passed = performPassValidation();
+
+
+                            if (passed) {
+                                //btnSave.setEnabled(false);
+                                newPassword = mPassNew.getText().toString();
+                                ContentValues values = new ContentValues();
+                                values.put(FoodContract.ProfileList.COLUMN_USER_PASS, newPassword);
+
+                                Uri updateUri = FoodContract.ProfileList.buildProfileIDURI(username);
+                                mRowsUpdated = getApplicationContext().getContentResolver().update(
+                                        updateUri,
+                                        values  ,
+                                        FoodContract.ProfileList.COLUMN_USER_ID + " = ?",
+                                        new String[]{username});
+
+                                //  Log.v("inserted uri", "value::" + insertedUri.toString());
+                                Toast.makeText(getApplicationContext(), "Password changed", Toast.LENGTH_SHORT)
+                                        .show();
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+
+                            }
+
+
+                        }
+                    });
+                }
+            }
+
+
+        });
 
     }
 
@@ -91,7 +179,8 @@ public class ForgotActivity extends AppCompatActivity implements LoaderManager.L
             }
             if(contains_password.equalsIgnoreCase("Y"))
             {
-                String ans = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_ANSWER)));
+                dbAns = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_ANSWER)));
+                Log.v("forgot activity", "cursor values:: dbans::.. " + dbAns);
                 String question = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_QUESTION)));
                 textViewQ.setText(question);
 
@@ -121,4 +210,53 @@ public class ForgotActivity extends AppCompatActivity implements LoaderManager.L
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    public void addListenerOnButton() {
+
+
+
+    }
+
+
+
+    private boolean performValidation() {
+
+        cancel = false;
+        if ((mEditAnswer.getText().toString()).matches("")) {
+            mEditAnswer.setError("answer is empty");
+            focusView = mEditAnswer;
+            cancel = true;
+        }
+
+        else if (!(mEditAnswer.getText().toString().equalsIgnoreCase(dbAns))) {
+            mEditAnswer.setError("Sorry,Your answer does not match.");
+            focusView = mEditAnswer;
+            cancel = true;
+        }
+
+        else
+            return false;
+
+
+        return cancel;
+    }
+
+     private boolean performPassValidation()
+    {
+        passed = false;
+
+        if( ((mPassNew.getText().toString()).length()) > 4) {
+            passed = true;
+        }
+        else {
+
+            mPassNew.setError("password is too short");
+            focusView = mPassNew;
+        }
+        return passed;
+
+
+    }
+
 }

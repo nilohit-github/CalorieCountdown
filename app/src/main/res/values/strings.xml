@@ -44,6 +44,7 @@
     <string name="Required">Your total calorie requirement: </string>
     <string name="action_update_profile">Update Profile</string>
     <string name="submit_answer">Submit</string>
+    <string name="save">Reset</string>
 
     <string-array name="question_arrays">
         <item>What is your favourite tv show ?</item>
