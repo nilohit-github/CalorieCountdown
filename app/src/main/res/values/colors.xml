@@ -6,4 +6,6 @@
     <color name="material_blue_lightest">#B3E5FC</color>
     <color name="yellow">#ffff00</color>
     <color name="search">#008C9F</color>
+    <color name="activated">#E0E0E0</color>
+    <color name="white">#FFFFFF</color>
 </resources>
