@@ -10,6 +10,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.appguru.android.caloriecountdown.AddFoodActivity">
 
+    <ScrollView
+        android:id="@+id/add_food_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -135,5 +141,5 @@
             android:textColor="@color/colorAccent"
             android:textSize="20sp"
             />
-
+</ScrollView>
 </RelativeLayout>

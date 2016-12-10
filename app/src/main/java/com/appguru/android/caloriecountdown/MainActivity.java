@@ -82,7 +82,13 @@ public class MainActivity extends AppCompatActivity implements AddFoodFragment.C
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             int curr = viewPager.getCurrentItem();
             if(curr == 0){
+
                 Intent intent = new Intent(this, LoginActivity.class);
+                //This is added to remove this activity from stach , so that when back pressed is used on login screen
+                // it does not go back to any activity that is live on stack.
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                 startActivity(intent);
             }
             viewPager.setCurrentItem(0, true);

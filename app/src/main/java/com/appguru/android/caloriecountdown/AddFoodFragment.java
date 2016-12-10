@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 import com.appguru.android.caloriecountdown.Data.FoodContract;
 import com.appguru.android.caloriecountdown.Utility.Utilities;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.plus.PlusOneButton;
 
 import java.text.SimpleDateFormat;
@@ -69,7 +71,7 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
     private OnFragmentInteractionListener mListener;
     private float tot_calories_consumed;
     private float tot_calories_remaining;
-    private String activity;
+    private String activity ="NoSource";
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs" ;
     public static final String Name = "nameKey";
@@ -95,6 +97,7 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(c.getTime());
         Log.v("query date", "date+::" + formattedDate);
+        Log.v("user date", "user+::" + username);
 
         Uri CaloriSearchUri = FoodContract.FoodEntry.buildFoodUriWithUserIdDate(username,formattedDate);
 
@@ -206,19 +209,29 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_add_food, container, false);
         Intent intent = getActivity().getIntent();
-        username = intent.getStringExtra("username");
-        activity = intent.getStringExtra("Source");
+        if (intent != null && intent.hasExtra("Source"))
+        {
+            activity = intent.getStringExtra("Source");
+            username = intent.getStringExtra("username");
+
+        }
+
+
         sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         if(activity.equalsIgnoreCase("fromLogin") || activity.equalsIgnoreCase("fromProfile") || activity.equalsIgnoreCase("fromSignup") )
         {
             goal = intent.getStringExtra("goal");
             weight = intent.getFloatExtra("weight",1);
 
+
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putString(Name, username);
             editor.putFloat(WeightKey, weight);
             editor.putString(GoalKey, goal);
             editor.commit();
+
+
+
         }
 
         Utilities utilities = new Utilities();
@@ -240,8 +253,15 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
         addListenerOnButton();
         addListenerOnImageClick();
 
-        //Find the +1 button
-       // mPlusOneButton = (PlusOneButton) view.findViewById(R.id.plus_one_button);
+       //test admob
+        AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+        // Create an ad request. Check logcat output for the hashed device ID to
+        // get test ads on a physical device. e.g.
+        // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
 
         return rootView;
     }

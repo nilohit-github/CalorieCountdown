@@ -16,7 +16,7 @@ import android.util.TypedValue;
 import android.widget.RemoteViews;
 
 import com.appguru.android.caloriecountdown.Data.FoodContract;
-import com.appguru.android.caloriecountdown.MainActivity;
+import com.appguru.android.caloriecountdown.LoginActivity;
 import com.appguru.android.caloriecountdown.R;
 import com.appguru.android.caloriecountdown.Utility.Utilities;
 
@@ -31,7 +31,7 @@ public class CalorieWidgetIntentService  extends IntentService {
     };
     // these indices must match the projection
     private static final int INDEX_CALORIE_ID = 0;
-    private String description ="Calorie Countdown";
+    private String description ="Calories Consumed";
     private float total_consumed;
 
 
@@ -91,7 +91,10 @@ public class CalorieWidgetIntentService  extends IntentService {
 
 
             // Create an Intent to launch MainActivity
-            Intent launchIntent = new Intent(this, MainActivity.class);
+            Intent launchIntent = new Intent(this, LoginActivity.class);
+            intent.setAction("CalorieWidgetIntentService");
+            launchIntent.putExtra("Source", "fromWidget");
+            launchIntent.putExtra("username", username);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, launchIntent, 0);
             views.setOnClickPendingIntent(R.id.widget, pendingIntent);
 

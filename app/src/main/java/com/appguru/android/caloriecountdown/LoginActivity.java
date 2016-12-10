@@ -3,6 +3,8 @@ package com.appguru.android.caloriecountdown;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -24,6 +26,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.appguru.android.caloriecountdown.Data.FoodContract;
+import com.appguru.android.caloriecountdown.Widget.MyWidgetProvider;
 
 /**
  * A login screen that offers login via email/password.
@@ -338,6 +341,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                     Log.v("show progress ", "::::19 "+email );
                     cursor.close();
                     Log.v("show progress ", "::::20 "+email );
+
+                    ComponentName name = new ComponentName(getApplicationContext(), MyWidgetProvider.class);
+
+                    Intent intentWidget = new Intent(getApplicationContext(),MyWidgetProvider.class);
+                    intentWidget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
+
+                    int[] ids = AppWidgetManager.getInstance(getApplicationContext()).getAppWidgetIds(name);
+                    intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+                    sendBroadcast(intentWidget);
+
+
+
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra("username", email);
                     intent.putExtra("goal", goal);
@@ -360,6 +376,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 }
             }
             else {
+
+                ComponentName name = new ComponentName(getApplicationContext(), MyWidgetProvider.class);
+
+                Intent intentWidget = new Intent(getApplicationContext(),MyWidgetProvider.class);
+                intentWidget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
+
+                int[] ids = AppWidgetManager.getInstance(getApplicationContext()).getAppWidgetIds(name);
+                intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+                sendBroadcast(intentWidget);
+
+
+
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra("username", email);
                 intent.putExtra("goal", goal);
@@ -387,6 +416,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+           finish();
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
 
 }
 

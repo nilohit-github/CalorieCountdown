@@ -1,5 +1,7 @@
 package com.appguru.android.caloriecountdown;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appguru.android.caloriecountdown.Data.FoodContract;
+import com.appguru.android.caloriecountdown.Widget.MyWidgetProvider;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -135,6 +138,18 @@ public class AddFoodActivity extends AppCompatActivity {
                     Log.v("inserted uri", "value::" + insertedUri.toString());
                     Toast.makeText(AddFoodActivity.this, "Food added to Database", Toast.LENGTH_SHORT)
                             .show();
+
+                ComponentName name = new ComponentName(getApplicationContext(), MyWidgetProvider.class);
+
+               Intent intentWidget = new Intent(getApplicationContext(),MyWidgetProvider.class);
+                intentWidget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
+
+                int[] ids = AppWidgetManager.getInstance(getApplicationContext()).getAppWidgetIds(name);
+                intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+                sendBroadcast(intentWidget);
+
+
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("username", username);
                     intent.putExtra("Source", "fromAddFoodActivity");
