@@ -37,4 +37,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         return 4;           // As there are only 3 Tabs
     }
 
+
+
 }

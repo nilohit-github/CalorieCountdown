@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "1066279366846",
+    "project_id": "firebase-caloriecountdown"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066279366846:android:23ac426c376c91b1",
+        "android_client_info": {
+          "package_name": "com.appguru.android.caloriecountdown"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNKo2O1PV90TIpSG1po6UwGr3np-ZpYL8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-88743263-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

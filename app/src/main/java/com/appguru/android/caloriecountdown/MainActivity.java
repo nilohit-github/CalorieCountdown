@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity implements AddFoodFragment.C
         startActivity(intent);
 
     }
+
+
 }
 
 

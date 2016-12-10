@@ -27,10 +27,13 @@ import com.appguru.android.caloriecountdown.Data.FoodContract;
 import com.appguru.android.caloriecountdown.Utility.Utilities;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.plus.PlusOneButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import static com.google.android.gms.plus.PlusOneDummyView.TAG;
 
 /**
  * A fragment with a Google +1 button.
@@ -79,6 +82,7 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
     public static final String GoalKey = "goalKey";
     private boolean emptyCheck = false;
     private View focusView = null;
+    private Tracker mTracker;
 
 
     /**
@@ -201,6 +205,12 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        //analytics
+
+        CalorieAnalytics application = (CalorieAnalytics)getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+
+
     }
 
     @Override
@@ -269,6 +279,10 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TAG, "Setting screen name: " + "add food screen");
+       // mTracker.setScreenName("Image~" + "add food screen");
+        //mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
 
         // Refresh the state of the +1 button each time the activity receives focus.
 //        mPlusOneButton.initialize(PLUS_ONE_URL, PLUS_ONE_REQUEST_CODE);
@@ -380,6 +394,9 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
         }
         return emptyCheck;
     }
+
+
+
 
 
 
