@@ -27,6 +27,7 @@ import com.appguru.android.caloriecountdown.Data.FoodContract;
 import com.appguru.android.caloriecountdown.Utility.Utilities;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.plus.PlusOneButton;
 
@@ -280,8 +281,12 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
     public void onResume() {
         super.onResume();
         Log.i(TAG, "Setting screen name: " + "add food screen");
-       // mTracker.setScreenName("Image~" + "add food screen");
+       mTracker.setScreenName("Image~" + "add food screen");
         //mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Share")
+                .build());
 
 
         // Refresh the state of the +1 button each time the activity receives focus.

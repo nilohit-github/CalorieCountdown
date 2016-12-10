@@ -16,6 +16,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:name=".CalorieAnalytics"
         android:theme="@style/AppTheme">
 
         <meta-data
@@ -67,5 +68,7 @@
         </service>
 
     </application>
+
+
 
 </manifest>
