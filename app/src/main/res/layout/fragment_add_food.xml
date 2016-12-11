@@ -47,7 +47,7 @@
             android:maxLength="15"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
             android:inputType="text" >
-            <requestFocus />
+
         </EditText>
 
 
@@ -62,6 +62,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
                 android:text="@string/action_search_food"
+                android:contentDescription="@string/SearchFood"
                 android:textStyle="bold"
                 android:padding="10dp"
                 android:layout_centerHorizontal="true"

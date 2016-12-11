@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:text="@string/submit_answer"
-
+            android:contentDescription="@string/Submit_Security_Answer"
             android:textStyle="bold"
             android:padding="15dp"
             android:layout_centerInParent="true"

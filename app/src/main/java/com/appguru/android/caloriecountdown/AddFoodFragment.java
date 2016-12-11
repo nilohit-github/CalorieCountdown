@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -205,7 +206,7 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         //analytics
 
         CalorieAnalytics application = (CalorieAnalytics)getActivity().getApplication();
@@ -220,12 +221,14 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_add_food, container, false);
         Intent intent = getActivity().getIntent();
+
         if (intent != null && intent.hasExtra("Source"))
         {
             activity = intent.getStringExtra("Source");
             username = intent.getStringExtra("username");
 
         }
+
 
 
         sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);

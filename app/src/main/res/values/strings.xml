@@ -46,6 +46,11 @@
     <string name="submit_answer">Submit</string>
     <string name="save">Reset</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="addFoodToDatabase">Add selected food</string>
+    <string name="Submit_Security_Answer">Submit Security Answer</string>
+    <string name="SignIn">SignIn to the App</string>
+    <string name="SignUp">Create Account</string>
+    <string name="SearchFood">Search Food Item</string>
 
     <string-array name="question_arrays">
         <item>What is your favourite tv show ?</item>
