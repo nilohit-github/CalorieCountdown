@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     private String password;
     private String email_returned;
     private String password_returned;
-    private String has_password ="N";
+    private String has_password = "N";
     private Boolean passed;
 
     /**
@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-   // private UserLoginTask mAuthTask = null;
+    // private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -107,8 +107,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     }
 
 
-    private void attemptReset()
-    {
+    private void attemptReset() {
         mEmailView.setError(null);
         email = mEmailView.getText().toString();
         boolean cancel = false;
@@ -128,7 +127,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         } else {
             Intent intent = new Intent(this, ForgotActivity.class);
             intent.putExtra("username", email);
-            Log.v("user id",email);
+            Log.v("user id", email);
             startActivity(intent);
 
 
@@ -186,23 +185,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            Log.v("show progress ", ":::12 "+email );
-          //  mAuthTask = new UserLoginTask(email, password);
-           // mAuthTask.execute((Void) null);
+            //  mAuthTask = new UserLoginTask(email, password);
+            // mAuthTask.execute((Void) null);
             Loader<Object> loader = getSupportLoaderManager().getLoader(LOGIN_LOADER);
 
-            if (loader != null)
-                Log.v("show progress ", ":::100 "+email );
-            {
+            if (loader != null) {
                 getSupportLoaderManager().destroyLoader(LOGIN_LOADER);
                 getSupportLoaderManager().initLoader(LOGIN_LOADER, null, this);
             }
             getSupportLoaderManager().restartLoader(LOGIN_LOADER, null, this);
-
-
-
-
-
 
 
         }
@@ -215,8 +206,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        passed =  password.length() > 4;
-        if(passed){
+        passed = password.length() > 4;
+        if (passed) {
             has_password = "Y";
         }
         return passed;
@@ -230,52 +221,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
-        Log.v("show progress ", ":::1 "+email );
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            Log.v("show progress ", ":::2 "+email );
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-            Log.v("show progress ", ":::3 "+email );
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            Log.v("show progress ", ":::4 "+email );
             mLoginFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    Log.v("show progress ", ":::5 "+email );
+                    Log.v("show progress ", ":::5 " + email);
                     mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                    Log.v("show progress ", ":::6 "+email );
+                    Log.v("show progress ", ":::6 " + email);
                 }
             });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            Log.v("show progress ", ":::7 "+email );
             mProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    Log.v("show progress ", ":::8 "+email );
                     mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                    Log.v("show progress ", ":::9 "+email );
+
                 }
             });
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            Log.v("show progress ", ":::10 "+email );
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            Log.v("show progress ", ":::11 "+email );
         }
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
-        Log.v("show progress ", ":::13 "+email );
+        Log.v("show progress ", ":::13 " + email);
 
         Uri AuthenticationUri = FoodContract.ProfileList.buildProfileIDURI(email);
-        Log.v("login activity", "inside on create load email:: "+email );
-        Log.v("login activity", "inside on create load "+AuthenticationUri.toString() );
         return new CursorLoader(this,
                 AuthenticationUri,
                 null,
@@ -288,81 +269,59 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        Log.v("show progress ", ":::14 "+email );
-        Log.v("login activity", "inside load finished " );
         int j = cursor.getCount();
-        if(j==0)
-        {
-            Log.v("show progress ", ":::15 "+email );
+        if (j == 0) {
             Intent intent = new Intent(this, SignupActivity.class);
             intent.putExtra("username", email);
             intent.putExtra("haspass", has_password);
-            if(has_password.equalsIgnoreCase("Y"))
-            {
+            if (has_password.equalsIgnoreCase("Y")) {
                 intent.putExtra("password", password);
             }
-            Log.v("user id",email);
-            Log.v("pass",password);
-            Log.v("has pass",has_password);
+
             startActivity(intent);
-        }
-        else {
+        } else {
             cursor.moveToFirst();
-            Log.v("show progress ", ":::16 "+email );
+            Log.v("show progress ", ":::16 " + email);
 
 
-            email_returned =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_ID)));
-            Log.v("login activity", "cursor values:: email returned " +email_returned );
-            has_password =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_HAS_PASSWORD)));
-            Log.v("login activity", "cursor values:: has password " +has_password );
-            String ans =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_ANSWER)));
+            email_returned = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_ID)));
+            has_password = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_HAS_PASSWORD)));
+            String ans = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_ANSWER)));
             String goal = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_GOAL)));
             String gender = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_GENDER)));
-            int age =(cursor.getInt(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_AGE)));
+            int age = (cursor.getInt(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_AGE)));
             float height = (cursor.getFloat(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_HEIGHT)));
             float weight = (cursor.getFloat(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_WEIGHT)));
-            String ques =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_QUESTION)));
-            Log.v("login activity", "cursor values:::: ans " +ans );
-            Log.v("login activity", "cursor values:::: goal " +goal );
-            Log.v("login activity", "cursor values:::: gender " +gender );
-            Log.v("login activity", "cursor values:::: age " +age );
-            Log.v("login activity", "cursor values:::: height " +height );
-            Log.v("login activity", "cursor values:::: weight " +weight );
-            Log.v("login activity", "cursor values:::: quest " +ques );
+            String ques = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_QUESTION)));
 
+            if (has_password.equalsIgnoreCase("Y")) {
+                Log.v("show progress ", ":::17 " + email);
+                password_returned = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_PASS)));
 
-            if(has_password.equalsIgnoreCase("Y")){
-                Log.v("show progress ", ":::17 "+email );
-                password_returned =(cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_PASS)));
-                Log.v("login activity", "cursor values:::: pass returned " +password_returned );
-                Log.v("show progress ", "::::18 "+email );
-                if(password_returned.equalsIgnoreCase(password))
-                {
-                    Log.v("show progress ", "::::19 "+email );
+                if (password_returned.equalsIgnoreCase(password)) {
+                    Log.v("show progress ", "::::19 " + email);
                     cursor.close();
-                    Log.v("show progress ", "::::20 "+email );
+
 
                     ComponentName name = new ComponentName(getApplicationContext(), MyWidgetProvider.class);
 
-                    Intent intentWidget = new Intent(getApplicationContext(),MyWidgetProvider.class);
+                    Intent intentWidget = new Intent(getApplicationContext(), MyWidgetProvider.class);
                     intentWidget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 
 
                     int[] ids = AppWidgetManager.getInstance(getApplicationContext()).getAppWidgetIds(name);
-                    intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+                    intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
                     sendBroadcast(intentWidget);
-
 
 
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra("username", email);
                     intent.putExtra("goal", goal);
-                    intent.putExtra("weight",weight);
+                    intent.putExtra("weight", weight);
                     intent.putExtra("Source", "fromLogin");
 
                     startActivity(intent);
-                }
-                else{
+                } else {
 
                     mLoginFormView.requestFocus();
                     mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -370,23 +329,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                     this.recreate();
 
 
-
-
-
                 }
-            }
-            else {
+            } else {
 
                 ComponentName name = new ComponentName(getApplicationContext(), MyWidgetProvider.class);
 
-                Intent intentWidget = new Intent(getApplicationContext(),MyWidgetProvider.class);
+                Intent intentWidget = new Intent(getApplicationContext(), MyWidgetProvider.class);
                 intentWidget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 
 
                 int[] ids = AppWidgetManager.getInstance(getApplicationContext()).getAppWidgetIds(name);
-                intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+                intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
                 sendBroadcast(intentWidget);
-
 
 
                 Intent intent = new Intent(this, MainActivity.class);
@@ -396,8 +350,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 intent.putExtra("Source", "fromLogin");
                 startActivity(intent);
             }
-
-
 
 
         }
@@ -424,7 +376,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-           finish();
+            finish();
             return true;
         } else {
             return super.onKeyDown(keyCode, event);

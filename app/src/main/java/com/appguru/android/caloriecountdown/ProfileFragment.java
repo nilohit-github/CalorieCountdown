@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,8 +105,8 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
         rootview = inflater.inflate(R.layout.fragment_profile, container, false);
         Intent intent = getActivity().getIntent();
         username = intent.getStringExtra("username");
-        np10 = (NumberPicker)rootview.findViewById(R.id.npFeet);
-        np11 = (NumberPicker)rootview.findViewById(R.id.npInch);
+        np10 = (NumberPicker) rootview.findViewById(R.id.npFeet);
+        np11 = (NumberPicker) rootview.findViewById(R.id.npInch);
 
         np10.setMinValue(1);
         //Specify the maximum value/number of NumberPicker
@@ -122,19 +121,18 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
         np10.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 //Display the newly selected number from picker
                 Feet = newVal;
             }
         });
         np11.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 //Display the newly selected number from picker
                 Inch = newVal;
             }
         });
-        Log.v("fragment profile", "user:::::: " +username );
 
 
         Loader<Object> loader = getLoaderManager().getLoader(PROFILE_LOADER);
@@ -161,7 +159,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
 
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -178,8 +175,6 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri ProfileUri = FoodContract.ProfileList.buildProfileIDURI(username);
-        Log.v("login activity", "inside on create load email:: "+username );
-        Log.v("login activity", "inside on create load "+ProfileUri.toString() );
         return new CursorLoader(getActivity(),
                 ProfileUri,
                 null,
@@ -193,21 +188,14 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
         int j = cursor.getCount();
-        if(j==0)
-        {
+        if (j == 0) {
 
             Toast.makeText(getContext(), "Unable to fetch Profile", Toast.LENGTH_SHORT)
                     .show();
-        }
-        else {
+        } else {
             cursor.moveToFirst();
-            Log.v("show profile ", "profile:: " + username);
-
-
             String user_id = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_ID)));
-            Log.v("login activity", "cursor values:: email returned " + user_id);
             String has_password = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_HAS_PASSWORD)));
-            Log.v("login activity", "cursor values:: has password " + has_password);
             String ans = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_ANSWER)));
             String goal = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_GOAL)));
             String gender = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_GENDER)));
@@ -216,33 +204,23 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             float weight = (cursor.getFloat(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_WEIGHT)));
             String ques = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_QUESTION)));
             int weight_final = Math.round(weight);
-            Log.v("login activity", "cursor values:::: ans " + ans);
-            Log.v("login activity", "cursor values:::: goal " + goal);
-            Log.v("login activity", "cursor values:::: gender " + gender);
-            Log.v("login activity", "cursor values:::: age " + age);
-            Log.v("login activity", "cursor values:::: height " + height);
-            Log.v("login activity", "cursor values:::: weight " + weight);
-            Log.v("login activity", "cursor values:::: quest " + ques);
+
             ediTextWeight = (EditText) getActivity().findViewById(R.id.editTextWt);
             editTextAge = (EditText) getActivity().findViewById(R.id.editTextAge);
             //editTextAnswer = (EditText) getActivity().findViewById(R.id.editTextAns);
             ediTextWeight.setText(String.valueOf(weight_final));
             //editTextAnswer.setText(ans);
             editTextAge.setText(String.valueOf(age));
-            radioSexGroup = (RadioGroup)getActivity().findViewById(R.id.rSex);
-            radioGoalGroup = (RadioGroup)getActivity().findViewById(R.id.rGoal);
-            if(gender.equalsIgnoreCase("Male"))
-            {
+            radioSexGroup = (RadioGroup) getActivity().findViewById(R.id.rSex);
+            radioGoalGroup = (RadioGroup) getActivity().findViewById(R.id.rGoal);
+            if (gender.equalsIgnoreCase("Male")) {
                 radioSexGroup.check(R.id.radioMale);
-            }
-            else
+            } else
                 radioSexGroup.check(R.id.radioFemale);
 
-            if(goal.equalsIgnoreCase("MaintainWeight"))
-            {
+            if (goal.equalsIgnoreCase("MaintainWeight")) {
                 radioGoalGroup.check(R.id.rMaintainWeight);
-            }
-            else if(goal.equalsIgnoreCase("LoseWeight"))
+            } else if (goal.equalsIgnoreCase("LoseWeight"))
                 radioGoalGroup.check(R.id.rLoseWeight);
             else
                 radioGoalGroup.check(R.id.rGainWeight);
@@ -250,19 +228,14 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             Utilities utilities = new Utilities();
 
             height_in_feet = utilities.convertHeightToFeet(height);
-            height_in_inch = (int)Math.round((height - (height_in_feet *30.48))* 0.39370079) ;
-            Log.v("profile", "hight:::: height " + height);
-            Log.v("profile", "hight in feet " + height_in_feet);
-            Log.v("profile", "hight in inch " + height_in_inch);
-
+            height_in_inch = (int) Math.round((height - (height_in_feet * 30.48)) * 0.39370079);
             np10.setValue(height_in_feet);
             np11.setValue(height_in_inch);
 
 
-
         }
 
-        }
+    }
 
     /**
      * Called when a previously created loader is being reset, and thus
@@ -294,10 +267,10 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
     public void addListenerOnButton() {
 
 
-        radioSexGroup = (RadioGroup)getActivity().findViewById(R.id.rSex);
-        radioGoalGroup = (RadioGroup)getActivity().findViewById(R.id.rGoal);
+        radioSexGroup = (RadioGroup) getActivity().findViewById(R.id.rSex);
+        radioGoalGroup = (RadioGroup) getActivity().findViewById(R.id.rGoal);
 
-        btnDisplay = (Button)rootview.findViewById(R.id.update_profile);
+        btnDisplay = (Button) rootview.findViewById(R.id.update_profile);
 
         btnDisplay.setOnClickListener(new View.OnClickListener() {
 
@@ -308,8 +281,8 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 int selectedId = radioSexGroup.getCheckedRadioButtonId();
                 int selectedId2 = radioGoalGroup.getCheckedRadioButtonId();
                 // find the radiobutton by returned id
-                radioSexButton = (RadioButton)getActivity().findViewById(selectedId);
-                radioGoalButton = (RadioButton)getActivity().findViewById(selectedId2);
+                radioSexButton = (RadioButton) getActivity().findViewById(selectedId);
+                radioGoalButton = (RadioButton) getActivity().findViewById(selectedId2);
                 ediTextWeight = (EditText) getActivity().findViewById(R.id.editTextWt);
                 editTextAge = (EditText) getActivity().findViewById(R.id.editTextAge);
 
@@ -319,32 +292,15 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                 if (!cancel) {
 
                     Utilities utilities = new Utilities();
-                    if(Inch == null)
-                    {
-                        Inch =height_in_inch;
+                    if (Inch == null) {
+                        Inch = height_in_inch;
                     }
-                    if(Feet == null)
-                    {
-                        Feet =height_in_feet;
+                    if (Feet == null) {
+                        Feet = height_in_feet;
                     }
                     mHeight = utilities.convertHeightToMeter(Feet, Inch);
                     mAge = Integer.parseInt(editTextAge.getText().toString());
                     mWeight = Float.parseFloat(ediTextWeight.getText().toString());
-
-                    Log.v("user id", username);
-//                Log.v("pass",password);
-
-                    Log.v("profile Feet", Feet.toString());
-                    Log.v("profile Inch", Inch.toString());
-                    Log.v("profile height", String.valueOf(mHeight));
-                    Log.v("profile SEX", radioSexButton.getText().toString());
-                    Log.v("profile goal", radioGoalButton.getText().toString());
-
-                    Log.v("profile Age", mAge.toString());
-
-                    Log.v("profile weight", String.valueOf(mWeight));
-
-
 
                     ContentValues values = new ContentValues();
 
@@ -358,19 +314,18 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
                     Uri updateUri = FoodContract.ProfileList.buildProfileIDURI(username);
                     mRowsUpdated = getContext().getContentResolver().update(
                             updateUri,
-                            values  ,
+                            values,
                             FoodContract.ProfileList.COLUMN_USER_ID + " = ?",
                             new String[]{username});
 
 
-
-                  //  Log.v("inserted uri", "value::" + insertedUri.toString());
+                    //  Log.v("inserted uri", "value::" + insertedUri.toString());
                     Toast.makeText(getActivity(), "Profile updated", Toast.LENGTH_SHORT)
                             .show();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("username", username);
-                    intent.putExtra("goal",radioGoalButton.getText().toString() );
-                    intent.putExtra("weight",mWeight);
+                    intent.putExtra("goal", radioGoalButton.getText().toString());
+                    intent.putExtra("weight", mWeight);
                     intent.putExtra("Source", "fromProfile");
 
                     startActivity(intent);
@@ -390,15 +345,11 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
             ediTextWeight.setError("weight is empty");
             focusView = ediTextWeight;
             cancel = true;
-        }
-
-        else if ((editTextAge.getText().toString().matches(""))) {
+        } else if ((editTextAge.getText().toString().matches(""))) {
             editTextAge.setError("Age is empty");
             focusView = editTextAge;
             cancel = true;
-        }
-
-        else
+        } else
             return false;
 
 

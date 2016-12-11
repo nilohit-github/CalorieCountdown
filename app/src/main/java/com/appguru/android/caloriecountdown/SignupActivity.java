@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -46,7 +45,6 @@ public class SignupActivity extends AppCompatActivity {
     private View focusView = null;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,16 +54,14 @@ public class SignupActivity extends AppCompatActivity {
         NumberPicker np1 = (NumberPicker) findViewById(R.id.np1);
         NumberPicker np2 = (NumberPicker) findViewById(R.id.np2);
         Intent intent = getIntent();
-         username= intent.getStringExtra("username");
-         haspass = intent.getStringExtra("haspass");
-         if(haspass.equalsIgnoreCase("Y"));
-         {
-             password = intent.getStringExtra("password");
+        username = intent.getStringExtra("username");
+        haspass = intent.getStringExtra("haspass");
+        if (haspass.equalsIgnoreCase("Y")) ;
+        {
+            password = intent.getStringExtra("password");
 //             Log.v("pass:::",password);
-         }
-        Log.v("user id:::",username);
-        //Log.v("pass",password);
-        Log.v("has pass:::",haspass);
+        }
+
         addListenerOnSpinnerItemSelection();
         addListenerOnButton();
 
@@ -84,14 +80,14 @@ public class SignupActivity extends AppCompatActivity {
 
         np1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 //Display the newly selected number from picker
-                 Feet = newVal;
+                Feet = newVal;
             }
         });
         np2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 //Display the newly selected number from picker
                 Inch = newVal;
             }
@@ -128,36 +124,20 @@ public class SignupActivity extends AppCompatActivity {
                 mEditAnswer = (EditText) findViewById(R.id.editText6);
                 mEditAge = (EditText) findViewById(R.id.editText4);
 
-               cancel = performValidation();
+                cancel = performValidation();
 
 
                 if (!cancel) {
 
                     Utilities utilities = new Utilities();
-                    if(Inch == null)
-                    {
-                        Inch =0;
+                    if (Inch == null) {
+                        Inch = 0;
                     }
                     mheight = utilities.convertHeightToMeter(Feet, Inch);
                     security = String.valueOf(spinner1.getSelectedItem());
                     age = Integer.parseInt(mEditAge.getText().toString());
                     weight = Float.parseFloat(mEditWeight.getText().toString());
                     answer = mEditAnswer.getText().toString();
-
-                    Log.v("user id", username);
-//                Log.v("pass",password);
-                    Log.v("signup security", security);
-                    Log.v("signup Feet", Feet.toString());
-                    Log.v("signup Inch", Inch.toString());
-                    Log.v("signup height", String.valueOf(mheight));
-                    Log.v("SEX", radioSexButton.getText().toString());
-                    Log.v("Goal", radioGoalButton.getText().toString());
-                    Log.v("has pass", haspass);
-                    Log.v("Age", age.toString());
-                    Log.v("answer", answer);
-                    Log.v("weight", String.valueOf(weight));
-
-
 
                     ContentValues values = new ContentValues();
                     values.put(FoodContract.ProfileList.COLUMN_USER_ID, username);
@@ -175,7 +155,6 @@ public class SignupActivity extends AppCompatActivity {
 
 
                     Uri insertedUri = getApplicationContext().getContentResolver().insert(FoodContract.ProfileList.CONTENT_URI, values);
-                    Log.v("inserted uri", "value::" + insertedUri.toString());
                     Toast.makeText(SignupActivity.this, "Profile Created", Toast.LENGTH_SHORT)
                             .show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -200,16 +179,12 @@ public class SignupActivity extends AppCompatActivity {
             mEditWeight.setError("weight is empty");
             focusView = mEditWeight;
             cancel = true;
-        }
-
-        else if ((mEditAge.getText().toString().matches(""))) {
+        } else if ((mEditAge.getText().toString().matches(""))) {
             mEditAge.setError("Age is empty");
             focusView = mEditAge;
             cancel = true;
-        }
-        else if(Feet == null)
-        {
-            TextView errorText = (TextView)findViewById(R.id.height);
+        } else if (Feet == null) {
+            TextView errorText = (TextView) findViewById(R.id.height);
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             //changes the selected item text to this
@@ -217,24 +192,19 @@ public class SignupActivity extends AppCompatActivity {
             focusView = errorText;
             cancel = true;
 
-        }
-
-        else if ((String.valueOf(spinner1.getSelectedItem()).matches(""))) {
-            TextView errorText = (TextView)spinner1.getSelectedView();
+        } else if ((String.valueOf(spinner1.getSelectedItem()).matches(""))) {
+            TextView errorText = (TextView) spinner1.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("my actual error text");//changes the selected item text to this
             //spinner1.setError("Please select a security question");
             focusView = spinner1;
             cancel = true;
-        }
-
-        else if (mEditAnswer.getText().toString().matches("")) {
+        } else if (mEditAnswer.getText().toString().matches("")) {
             mEditAnswer.setError("answer is empty");
             focusView = mEditAnswer;
             cancel = true;
-        }
-        else
+        } else
             return false;
 
 

@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,13 +86,12 @@ public class MacronutrientFragment extends Fragment implements LoaderManager.Loa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         chart = new BarChart(getContext());
-        View view =(chart);
+        View view = (chart);
 
         // Inflate the layout for this fragment
-       // View view = inflater.inflate(R.layout.fragment_macronutrient, container, false);
+        // View view = inflater.inflate(R.layout.fragment_macronutrient, container, false);
         Intent intent = getActivity().getIntent();
         username = intent.getStringExtra("username");
-        Log.v("fragment nutrient", "user:::::: " +username );
         Loader<Object> loader = getLoaderManager().getLoader(NUTRIENT_LOADER);
 
         if (loader != null)
@@ -103,7 +101,6 @@ public class MacronutrientFragment extends Fragment implements LoaderManager.Loa
             getLoaderManager().initLoader(NUTRIENT_LOADER, null, this);
         }
         getLoaderManager().restartLoader(NUTRIENT_LOADER, null, this);
-
 
 
         return view;
@@ -160,11 +157,9 @@ public class MacronutrientFragment extends Fragment implements LoaderManager.Loa
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(c.getTime());
-        Log.v("query date", "date+::" + formattedDate);
 
-        Uri CaloriSearchUri = FoodContract.FoodEntry.buildFoodUriWithUserIdDate(username,formattedDate);
+        Uri CaloriSearchUri = FoodContract.FoodEntry.buildFoodUriWithUserIdDate(username, formattedDate);
 
-        Log.v("login activity", "inside on create load "+CaloriSearchUri.toString() );
         return new CursorLoader(getActivity(),
                 CaloriSearchUri,
                 null,
@@ -178,21 +173,14 @@ public class MacronutrientFragment extends Fragment implements LoaderManager.Loa
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
         int j = cursor.getCount();
-        if(j==0)
-        {
-            Log.v("No macro-nutrients ", ":::15 "+"zero call" );
+        if (j == 0) {
 
-        }
-        else{
+        } else {
 
             while (cursor.moveToNext()) {
-                totalCarbsConsumed = totalCarbsConsumed+(cursor.getFloat(cursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_CARBS)));
-                Log.v("calories consumed ", ":::15 "+totalCarbsConsumed);
-                totalFatConsumed = totalFatConsumed+(cursor.getFloat(cursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_FAT)));
-                Log.v("calories consumed ", ":::15 "+totalCarbsConsumed);
-                totalProteinConsumed = totalProteinConsumed+(cursor.getFloat(cursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_PROTEIN)));
-                Log.v("calories consumed ", ":::15 "+totalCarbsConsumed);
-
+                totalCarbsConsumed = totalCarbsConsumed + (cursor.getFloat(cursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_CARBS)));
+                totalFatConsumed = totalFatConsumed + (cursor.getFloat(cursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_FAT)));
+                totalProteinConsumed = totalProteinConsumed + (cursor.getFloat(cursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_PROTEIN)));
 
             }
 
@@ -201,8 +189,6 @@ public class MacronutrientFragment extends Fragment implements LoaderManager.Loa
 
 
         }
-
-
 
 
     }

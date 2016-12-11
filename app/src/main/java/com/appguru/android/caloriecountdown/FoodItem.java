@@ -7,14 +7,14 @@ import android.os.Parcelable;
  * Created by jhani on 11/26/2016.
  */
 
-public class FoodItem  implements Parcelable {
+public class FoodItem implements Parcelable {
 
     //constructor
-    public FoodItem(){
+    public FoodItem() {
 
     }
 
-    private String foodName ;
+    private String foodName;
     private String foodCalories;
     private String foodProtein;
     private String foodCarbs;

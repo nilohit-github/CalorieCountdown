@@ -5,7 +5,6 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.format.Time;
-import android.util.Log;
 
 /**
  * Created by jhani on 11/13/2016.
@@ -32,14 +31,12 @@ public class FoodContract {
         Time time = new Time();
         time.set(startDate);
         int julianDay = Time.getJulianDay(startDate, time.gmtoff);
-        Log.v("inserted date", "inserted date::" + time.setJulianDay(julianDay));
         return time.setJulianDay(julianDay);
     }
 
     public static final class ProfileList implements BaseColumns {
         public static final String TABLE_NAME = "userprofile";
 
-        //
         public static final String COLUMN_USER_ID = "user_id";
         public static final String COLUMN_USER_PASS = "user_pass";
         public static final String COLUMN_USER_GENDER = "gender";
@@ -50,8 +47,6 @@ public class FoodContract {
         public static final String COLUMN_USER_ANSWER = "security_answer";
         public static final String COLUMN_HAS_PASSWORD = "has_password";
         public static final String COLUMN_USER_AGE = "age";
-
-
 
 
         public static final Uri CONTENT_URI =
@@ -67,11 +62,10 @@ public class FoodContract {
         }
 
 
-
         public static Uri buildProfileIDURI(String user_id) {
 
             return CONTENT_URI.buildUpon().appendPath(user_id).build();
-            //return null;
+
         }
 
         public static String getProfileIDFromUri(Uri uri) {
@@ -93,8 +87,6 @@ public class FoodContract {
         public static final String COLUMN_FOOD_CARBS = "carbs";
         public static final String COLUMN_FOOD_FAT = "fat";
         public static final String COLUMN_QUANTITY = "quantity";
-
-
 
 
         public static final Uri CONTENT_URI =
@@ -119,16 +111,14 @@ public class FoodContract {
 
 
         public static Uri buildFoodUriWithUserIdDate(String userID, String formattedDate) {
-                return CONTENT_URI.buildUpon().appendPath(userID)
-                        .appendPath(formattedDate).build();
+            return CONTENT_URI.buildUpon().appendPath(userID)
+                    .appendPath(formattedDate).build();
         }
 
         public static Uri buildFoodUriWithUserIdDateRange(String userID, String formattedDate, String dateRange) {
             return CONTENT_URI.buildUpon().appendPath(userID)
                     .appendPath(formattedDate).appendPath(dateRange).build();
         }
-
-
 
 
         public static String getUSERIDFromUri(Uri uri) {

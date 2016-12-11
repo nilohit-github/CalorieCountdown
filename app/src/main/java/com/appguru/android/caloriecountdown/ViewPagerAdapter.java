@@ -34,7 +34,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount()
     {
-        return 4;           // As there are only 3 Tabs
+        return 4;           // As there are only 4 Tabs
     }
 
 

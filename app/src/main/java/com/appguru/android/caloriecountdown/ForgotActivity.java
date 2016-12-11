@@ -11,7 +11,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,11 +22,11 @@ import android.widget.Toast;
 
 import com.appguru.android.caloriecountdown.Data.FoodContract;
 
-public class ForgotActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class ForgotActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private String username;
     private static final int FORGOT_LOADER = 0;
-    private String contains_password ="N";
+    private String contains_password = "N";
     private TextView textViewQ;
     private LinearLayout container;
     private Button btnDisplay;
@@ -39,9 +38,9 @@ public class ForgotActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mPassNew;
     private String newPassword;
     private String dbAns;
-    private boolean passed ;
+    private boolean passed;
     private int mRowsUpdated;
-    private boolean btn1Clicked  = false;
+    private boolean btn1Clicked = false;
 
 
     @Override
@@ -53,17 +52,16 @@ public class ForgotActivity extends AppCompatActivity implements LoaderManager.L
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        username= intent.getStringExtra("username");
+        username = intent.getStringExtra("username");
 
         Loader<Object> loader = getSupportLoaderManager().getLoader(FORGOT_LOADER);
 
-        if (loader != null)
-        {
+        if (loader != null) {
             getSupportLoaderManager().destroyLoader(FORGOT_LOADER);
             getSupportLoaderManager().initLoader(FORGOT_LOADER, null, this);
         }
         getSupportLoaderManager().restartLoader(FORGOT_LOADER, null, this);
-       // addListenerOnButton();
+        // addListenerOnButton();
 
         //add button logic here not working through a seperate function
 
@@ -84,8 +82,6 @@ public class ForgotActivity extends AppCompatActivity implements LoaderManager.L
                 if (!cancel) {
                     btnDisplay.setEnabled(false);
                     answer = mEditAnswer.getText().toString();
-
-                    Log.v("user id", username);
                     container = (LinearLayout) findViewById(R.id.container);
                     LayoutInflater layoutInflate = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View view = layoutInflate.inflate(R.layout.reset_password, null);
@@ -110,7 +106,7 @@ public class ForgotActivity extends AppCompatActivity implements LoaderManager.L
                                 Uri updateUri = FoodContract.ProfileList.buildProfileIDURI(username);
                                 mRowsUpdated = getApplicationContext().getContentResolver().update(
                                         updateUri,
-                                        values  ,
+                                        values,
                                         FoodContract.ProfileList.COLUMN_USER_ID + " = ?",
                                         new String[]{username});
 
@@ -142,7 +138,6 @@ public class ForgotActivity extends AppCompatActivity implements LoaderManager.L
      */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.v("forgot loader in ", ":::13 "+username );
 
         Uri AuthenticationUri = FoodContract.ProfileList.buildProfileIDURI(username);
         return new CursorLoader(this,
@@ -158,29 +153,23 @@ public class ForgotActivity extends AppCompatActivity implements LoaderManager.L
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
         int j = cursor.getCount();
-        textViewQ = (TextView)findViewById(R.id.SecurityQuestion);
-        if(j==0)
-        {
+        textViewQ = (TextView) findViewById(R.id.SecurityQuestion);
+        if (j == 0) {
             Toast.makeText(ForgotActivity.this, "Unable to find account.", Toast.LENGTH_SHORT)
                     .show();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
-        }
-        else {
+        } else {
             cursor.moveToFirst();
             contains_password = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_HAS_PASSWORD)));
-            Log.v("forgot activity", "cursor values:: has password " + contains_password);
-            if(contains_password.equalsIgnoreCase("N"))
-            {
+            if (contains_password.equalsIgnoreCase("N")) {
                 Toast.makeText(ForgotActivity.this, "No password associated with this username.", Toast.LENGTH_SHORT)
                         .show();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             }
-            if(contains_password.equalsIgnoreCase("Y"))
-            {
+            if (contains_password.equalsIgnoreCase("Y")) {
                 dbAns = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_ANSWER)));
-                Log.v("forgot activity", "cursor values:: dbans::.. " + dbAns);
                 String question = (cursor.getString(cursor.getColumnIndex(FoodContract.ProfileList.COLUMN_USER_QUESTION)));
                 textViewQ.setText(question);
 
@@ -215,9 +204,7 @@ public class ForgotActivity extends AppCompatActivity implements LoaderManager.L
     public void addListenerOnButton() {
 
 
-
     }
-
 
 
     private boolean performValidation() {
@@ -227,29 +214,23 @@ public class ForgotActivity extends AppCompatActivity implements LoaderManager.L
             mEditAnswer.setError("answer is empty");
             focusView = mEditAnswer;
             cancel = true;
-        }
-
-        else if (!(mEditAnswer.getText().toString().equalsIgnoreCase(dbAns))) {
+        } else if (!(mEditAnswer.getText().toString().equalsIgnoreCase(dbAns))) {
             mEditAnswer.setError("Sorry,Your answer does not match.");
             focusView = mEditAnswer;
             cancel = true;
-        }
-
-        else
+        } else
             return false;
 
 
         return cancel;
     }
 
-     private boolean performPassValidation()
-    {
+    private boolean performPassValidation() {
         passed = false;
 
-        if( ((mPassNew.getText().toString()).length()) > 4) {
+        if (((mPassNew.getText().toString()).length()) > 4) {
             passed = true;
-        }
-        else {
+        } else {
 
             mPassNew.setError("password is too short");
             focusView = mPassNew;

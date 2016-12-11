@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 
 public class MainActivity extends AppCompatActivity implements AddFoodFragment.Callback {
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements AddFoodFragment.C
         TabIndicatorColor sets the color for the indiactor below the tabs
          */
 
-       // tabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.color.tab_selector));
+        // tabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.color.tab_selector));
         //tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.indicator));
 
         /*
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements AddFoodFragment.C
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             int curr = viewPager.getCurrentItem();
-            if(curr == 0){
+            if (curr == 0) {
 
                 Intent intent = new Intent(this, LoginActivity.class);
                 //This is added to remove this activity from stach , so that when back pressed is used on login screen
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements AddFoodFragment.C
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                startActivity(intent);
+                startActivity(intent);
             }
             viewPager.setCurrentItem(0, true);
             return true;
@@ -111,8 +110,6 @@ public class MainActivity extends AppCompatActivity implements AddFoodFragment.C
         Intent intent = new Intent(this, DetailFoodActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("fooditem", foodItem);
-        Log.v(" main fragment user", "umain:::::: " +username );
-        Log.v(" main fragment food", "ufood:::::: " +foodItem );
         startActivity(intent);
 
     }

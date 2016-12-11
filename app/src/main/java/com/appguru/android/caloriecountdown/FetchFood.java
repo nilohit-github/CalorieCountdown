@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
 
     private String mfoodSearched;
-    public ArrayList<FoodItem> foodItemArrayList ;
+    public ArrayList<FoodItem> foodItemArrayList;
     public FoodAdapter foodAdapter;
     final String HITS = "hits";
     private String mUsername;
@@ -38,15 +38,14 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
     Toast toast;
     CharSequence text;
 
-    public FetchFood(Context context, String foodSearched,ArrayList foodItemArrayList,FoodAdapter foodAdapter ,String username) {
+    public FetchFood(Context context, String foodSearched, ArrayList foodItemArrayList, FoodAdapter foodAdapter, String username) {
         mContext = context;
-        mfoodSearched =foodSearched;
+        mfoodSearched = foodSearched;
         this.foodItemArrayList = foodItemArrayList;
-        this.foodAdapter= foodAdapter;
+        this.foodAdapter = foodAdapter;
         this.mUsername = username;
 
     }
-
 
 
     private boolean DEBUG = true;
@@ -81,7 +80,7 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
             Uri builtUri = Uri.parse(FOOD_BASE_URL).buildUpon()
                     .appendPath(food_searched)
                     .appendQueryParameter(results, resultValue)
-                    .appendQueryParameter(fields ,fieldsValue)
+                    .appendQueryParameter(fields, fieldsValue)
                     .appendQueryParameter(API_ID_PARAM, apiId)
                     .appendQueryParameter(API_KEY_PARAM, apiKey)
                     .build();
@@ -90,7 +89,6 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
-            Log.v("Url...", "URL: " + url);
 
             // Read the input stream into a String
             InputStream inputStream = null;
@@ -120,7 +118,7 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
                 reviewJasonStr = null;
             }
 
-            foodJsonStr =buffer.toString();
+            foodJsonStr = buffer.toString();
 
 
         } catch (IOException e) {
@@ -182,8 +180,7 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
 
                 food_name = finalJSONObject.getString("item_name");
                 Log.v("Url...", "nf_item_name " + food_name);
-                if(foodObject.contains(food_name))
-                {
+                if (foodObject.contains(food_name)) {
                     continue;
 
                 }
@@ -192,10 +189,6 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
                 food_carb = finalJSONObject.getString("nf_total_carbohydrate");
                 food_protein = finalJSONObject.getString("nf_protein");
                 //Log.v("Url...", "nf_item_name " + food_name);
-                Log.v("Url...", "nf_calories: " + food_cal);
-                Log.v("Url...", "nf_total_fat: " + food_fat);
-                Log.v("Url...", "nf_total_carbohydrate: " + food_carb);
-                Log.v("Url...", "nf_protein: " + food_protein);
 
                 FoodItem foodItem = new FoodItem();
                 foodItem.setFoodCalories(food_cal);
@@ -221,16 +214,15 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
     @Override
     protected void onPostExecute(ArrayList<FoodItem> foodArrayList) {
 
-        if(foodArrayList.size()==0)
-        {
+        if (foodArrayList.size() == 0) {
             int duration = Toast.LENGTH_LONG;
-            text ="Unable to fetch food items,Sorry for the inconvinience";
+            text = "Unable to fetch food items,Sorry for the inconvinience";
             toast = Toast.makeText(mContext, text, duration);
-            toast.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
+            toast.setGravity(Gravity.CENTER | Gravity.CENTER, 0, 0);
             toast.show();
             Intent intent = new Intent(mContext, MainActivity.class);
             intent.putExtra("Source", "fromJava");
-            intent.putExtra("username",mUsername);
+            intent.putExtra("username", mUsername);
             mContext.startActivity(intent);
 
 
@@ -239,7 +231,6 @@ public class FetchFood extends AsyncTask<Void, Void, ArrayList<FoodItem>> {
         super.onPostExecute(foodArrayList);
 
         foodAdapter.notifyDataSetChanged();
-
 
 
     }

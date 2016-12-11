@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 
-
 public class ProgressFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,7 +38,7 @@ public class ProgressFragment extends Fragment implements LoaderManager.LoaderCa
     private float total_cal;
     private static final int PROGRESS_LOADER = 0;
     ArrayList<Float> mCalList = new ArrayList<Float>();
-   // private List<Float> mCalList ;
+    // private List<Float> mCalList ;
     private int dataSetSize;
     private LineChart lineChart;
 
@@ -82,12 +81,10 @@ public class ProgressFragment extends Fragment implements LoaderManager.LoaderCa
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         lineChart = new LineChart(getContext());
-        View view =(lineChart);
-       // View view = inflater.inflate(R.layout.fragment_progress, container, false);
+        View view = (lineChart);
+        // View view = inflater.inflate(R.layout.fragment_progress, container, false);
         Intent intent = getActivity().getIntent();
         username = intent.getStringExtra("username");
-        Log.v("fragment progress", "user:::::: " +username );
-
         Loader<Object> loader = getLoaderManager().getLoader(PROGRESS_LOADER);
 
         if (loader != null)
@@ -131,12 +128,8 @@ public class ProgressFragment extends Fragment implements LoaderManager.LoaderCa
         String formattedDate = df.format(c.getTime());
         c.add(Calendar.DAY_OF_MONTH, -30);
         String dateRange = df.format(c.getTime());
-        Log.v("query date", "date+::" + formattedDate);
-        Log.v("query date", "dateRange+::" + dateRange);
+        Uri TCalorieSearchUri = FoodContract.FoodEntry.buildFoodUriWithUserIdDateRange(username, formattedDate, dateRange);
 
-        Uri TCalorieSearchUri = FoodContract.FoodEntry.buildFoodUriWithUserIdDateRange(username,formattedDate,dateRange);
-
-        Log.v("login activity", "inside progress create "+TCalorieSearchUri.toString() );
         return new CursorLoader(getActivity(),
                 TCalorieSearchUri,
                 null,
@@ -146,32 +139,25 @@ public class ProgressFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
 
-
-
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor1) {
 
         int j = cursor1.getCount();
-        if(j==0)
-        {
-            Log.v("No macro-nutrients ", ":::15 "+"zero call" );
+        if (j == 0) {
 
-        }
-        else{
-            int day_count =1;
+        } else {
+            int day_count = 1;
             while (cursor1.moveToNext()) {
-              // total_cal = (cursor1.getFloat(cursor1.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_CALORIES)));
+                // total_cal = (cursor1.getFloat(cursor1.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_CALORIES)));
                 total_cal = (cursor1.getFloat(0));
-                Log.v("calories tot ", ":::yes "+total_cal);
+                Log.v("calories tot ", ":::yes " + total_cal);
 
                 mCalList.add(total_cal);
                 dataSetSize = mCalList.size();
-                day_count = day_count+1;
-                if(day_count ==30)
-                {
+                day_count = day_count + 1;
+                if (day_count == 30) {
                     break;
                 }
-
 
 
             }
@@ -217,8 +203,8 @@ public class ProgressFragment extends Fragment implements LoaderManager.LoaderCa
         ArrayList<Entry> yVals = new ArrayList<>();
 
         for (int i = 0; i < dataSetSize; i++) {
-            xVals.add(i,String.valueOf(i+1));
-            yVals.add(new Entry((mCalList.get(i)),i));
+            xVals.add(i, String.valueOf(i + 1));
+            yVals.add(new Entry((mCalList.get(i)), i));
         }
 
         LineDataSet dataSet = new LineDataSet(yVals, "Calories per day");

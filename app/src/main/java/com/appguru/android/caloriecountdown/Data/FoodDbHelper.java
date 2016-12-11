@@ -18,6 +18,7 @@ public class FoodDbHelper extends SQLiteOpenHelper {
     public FoodDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
@@ -25,14 +26,14 @@ public class FoodDbHelper extends SQLiteOpenHelper {
 
                 // Unique keys will be auto-generated
                 FoodContract.FoodEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                FoodContract.FoodEntry.COLUMN_USER_KEY + " TEXT NOT NULL, "+
+                FoodContract.FoodEntry.COLUMN_USER_KEY + " TEXT NOT NULL, " +
                 FoodContract.FoodEntry.COLUMN_DATE + " TEXT NOT NULL, " +
-                FoodContract.FoodEntry.COLUMN_FOOD_DESC + " TEXT NOT NULL, "+
-                FoodContract.FoodEntry.COLUMN_FOOD_CALORIES + " REAL NOT NULL, "+
-                FoodContract.FoodEntry.COLUMN_FOOD_PROTEIN + " REAL, "+
-                FoodContract.FoodEntry.COLUMN_FOOD_FAT + " REAL, "+
-                FoodContract.FoodEntry.COLUMN_FOOD_CARBS + " REAL,"+
-                FoodContract.FoodEntry.COLUMN_QUANTITY + " REAL NOT NULL "+
+                FoodContract.FoodEntry.COLUMN_FOOD_DESC + " TEXT NOT NULL, " +
+                FoodContract.FoodEntry.COLUMN_FOOD_CALORIES + " REAL NOT NULL, " +
+                FoodContract.FoodEntry.COLUMN_FOOD_PROTEIN + " REAL, " +
+                FoodContract.FoodEntry.COLUMN_FOOD_FAT + " REAL, " +
+                FoodContract.FoodEntry.COLUMN_FOOD_CARBS + " REAL," +
+                FoodContract.FoodEntry.COLUMN_QUANTITY + " REAL NOT NULL " +
 
                 " );";
 
@@ -40,7 +41,7 @@ public class FoodDbHelper extends SQLiteOpenHelper {
 
                 // Unique keys will be auto-generated in either case.
                 FoodContract.ProfileList._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                FoodContract.ProfileList.COLUMN_USER_ID + " TEXT UNIQUE NOT NULL, "+
+                FoodContract.ProfileList.COLUMN_USER_ID + " TEXT UNIQUE NOT NULL, " +
                 FoodContract.ProfileList.COLUMN_USER_GENDER + " TEXT NOT NULL," +
                 FoodContract.ProfileList.COLUMN_USER_HEIGHT + " REAL NOT NULL," +
                 FoodContract.ProfileList.COLUMN_USER_WEIGHT + " REAL NOT NULL," +
@@ -56,8 +57,6 @@ public class FoodDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CREATE_PROFILE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_FOOD_TABLE);
     }
-
-
 
 
     @Override

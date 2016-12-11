@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,26 +21,20 @@ public class DetailFoodActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.v("detailfood", "detailnam:::::: " +username );
         setContentView(R.layout.activity_detail_food);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Intent intent = getIntent();
-        username= intent.getStringExtra("username");
+        username = intent.getStringExtra("username");
         foodSearched = intent.getStringExtra("fooditem");
-        Log.v("detailfood", "detailname:::::: " +username );
-        Log.v("detailfood", "detailfood:::::: " +foodSearched );
         foodItemArrayList = new ArrayList<FoodItem>();
-        mFoodListView = (ListView)findViewById(R.id.listview_food);
-        foodAdapter = new FoodAdapter(getApplicationContext(),R.layout.activity_detail_food,foodItemArrayList);
+        mFoodListView = (ListView) findViewById(R.id.listview_food);
+        foodAdapter = new FoodAdapter(getApplicationContext(), R.layout.activity_detail_food, foodItemArrayList);
 
 
-        if(username != null && foodSearched != null )
-        {
-            FetchFood fetchfood = new FetchFood(this,foodSearched ,foodItemArrayList,foodAdapter,username);
-            Log.v("detailfood", "inside exe:::::: " +foodSearched );
+        if (username != null && foodSearched != null) {
+            FetchFood fetchfood = new FetchFood(this, foodSearched, foodItemArrayList, foodAdapter, username);
             fetchfood.execute();
             mFoodListView.setAdapter(foodAdapter);
         }
@@ -54,7 +47,7 @@ public class DetailFoodActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), AddFoodActivity.class);
                 intent.putExtra("getFood", (Parcelable) foodItem);
-                intent.putExtra("username",username);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });

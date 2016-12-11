@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 
@@ -24,15 +23,16 @@ import com.appguru.android.caloriecountdown.Utility.Utilities;
  * Created by jhani on 12/8/2016.
  */
 
-public class CalorieWidgetIntentService  extends IntentService {
+public class CalorieWidgetIntentService extends IntentService {
     private static final String[] PROFILE_COLUMNS = {
             FoodContract.FoodEntry.COLUMN_FOOD_CALORIES
 
     };
     // these indices must match the projection
     private static final int INDEX_CALORIE_ID = 0;
-    private String description ="Calories Consumed";
+    private String description = "Calories Consumed";
     private float total_consumed;
+    int layoutId;
 
 
     public CalorieWidgetIntentService() {
@@ -41,7 +41,7 @@ public class CalorieWidgetIntentService  extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.v("calories consumed ", "from intent service ");
+
         // Retrieve all of the Today widget ids: these are the widgets we need to update
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this,
@@ -50,7 +50,6 @@ public class CalorieWidgetIntentService  extends IntentService {
 
         // Get today's data from the ContentProvider
         String username = Utilities.getPreferredLocation(this);
-        Log.v("calories consumed ", "from intent username " + username);
         String todaysDate = Utilities.getTodaysDate(this);
 
 
@@ -60,22 +59,24 @@ public class CalorieWidgetIntentService  extends IntentService {
                 null, null);
         int j = data.getCount();
         if (j == 0) {
-            Log.v("No calories consumed ", ":::15 " + "zero call");
-
-            //textView1.setText("Total Calories consumed : " + 0);
-            //textView3.setText("Total Calories remaining for today : " + Math.round(tot_calories));
+            layoutId = R.layout.widget_calorie;
+            RemoteViews views = new RemoteViews(getPackageName(), layoutId);
+            views.setImageViewResource(R.id.widget_icon, R.drawable.welcome);
+            // Content Descriptions for RemoteViews were only added in ICS MR1
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                setRemoteContentDescription(views, description);
+            }
+            views.setTextViewText(R.id.widget_description, description);
+            views.setTextViewText(R.id.widget_value, "0");
 
         } else {
             while (data.moveToNext()) {
                 total_consumed = total_consumed + (data.getFloat(data.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_CALORIES)));
-                //tot_calories_consumed = tot_cal+(cursor.getFloat(cursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_CALORIES)));
-                //total_consumed = total_consumed +
-                Log.v("calories consumed ", "from intent service " + total_consumed);
 
             }
             data.close();
 
-            int layoutId;
+
             layoutId = R.layout.widget_calorie;
 
             RemoteViews views = new RemoteViews(getPackageName(), layoutId);
@@ -103,6 +104,7 @@ public class CalorieWidgetIntentService  extends IntentService {
 
         }
     }
+
     private int getWidgetWidth(AppWidgetManager appWidgetManager, int appWidgetId) {
         // Prior to Jelly Bean, widgets were always their default size
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
@@ -123,7 +125,7 @@ public class CalorieWidgetIntentService  extends IntentService {
             return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, minWidthDp,
                     displayMetrics);
         }
-        return  getResources().getDimensionPixelSize(R.dimen.widget_today_default_width);
+        return getResources().getDimensionPixelSize(R.dimen.widget_today_default_width);
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)

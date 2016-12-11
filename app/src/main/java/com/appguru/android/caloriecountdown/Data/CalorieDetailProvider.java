@@ -11,10 +11,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 /**
- * Defines table and column names for the weather database.
+ * Defines table and column names for the food and calorie database.
  */
 public class CalorieDetailProvider extends ContentProvider {
 
@@ -30,26 +29,24 @@ public class CalorieDetailProvider extends ContentProvider {
     static final int PROFILE_WITH_USER_ID = 301;
 
     private static final String sFoodByID =
-            FoodContract.FoodEntry.TABLE_NAME+
+            FoodContract.FoodEntry.TABLE_NAME +
                     "." + FoodContract.FoodEntry.COLUMN_USER_KEY + " = ? ";
     private static final String sFoodByIDAndDate =
-            FoodContract.FoodEntry.TABLE_NAME+
+            FoodContract.FoodEntry.TABLE_NAME +
                     "." + FoodContract.FoodEntry.COLUMN_USER_KEY + " = ? AND " +
-    FoodContract.FoodEntry.COLUMN_DATE + " = ? ";
+                    FoodContract.FoodEntry.COLUMN_DATE + " = ? ";
     private static final String sProfileByID =
-            FoodContract.ProfileList.TABLE_NAME+
-                    "." + FoodContract.ProfileList.COLUMN_USER_ID+ " = ? ";
-  //  private static final String sFoodByIDAndDateRange =
+            FoodContract.ProfileList.TABLE_NAME +
+                    "." + FoodContract.ProfileList.COLUMN_USER_ID + " = ? ";
+    //  private static final String sFoodByIDAndDateRange =
     //        FoodContract.FoodEntry.TABLE_NAME+
-      //              "." + FoodContract.FoodEntry.COLUMN_USER_KEY + " = ? AND " +
-        //            FoodContract.FoodEntry.TABLE_NAME+"."+FoodContract.FoodEntry.COLUMN_DATE + " BETWEEN = ? AND = ? " ;
+    //              "." + FoodContract.FoodEntry.COLUMN_USER_KEY + " = ? AND " +
+    //            FoodContract.FoodEntry.TABLE_NAME+"."+FoodContract.FoodEntry.COLUMN_DATE + " BETWEEN = ? AND = ? " ;
 
 
     private static final String sFoodByIDAndDateRange =
-            FoodContract.FoodEntry.TABLE_NAME+
-                  "." + FoodContract.FoodEntry.COLUMN_USER_KEY + " = ? ";
-
-
+            FoodContract.FoodEntry.TABLE_NAME +
+                    "." + FoodContract.FoodEntry.COLUMN_USER_KEY + " = ? ";
 
 
     static UriMatcher buildUriMatcher() {
@@ -58,8 +55,6 @@ public class CalorieDetailProvider extends ContentProvider {
         // URI.  It's common to use NO_MATCH as the code for this case. Add the constructor below.
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = FoodContract.CONTENT_AUTHORITY;
-
-
 
 
         // 2) Use the addURI function to match each of the types.  Use the constants from
@@ -75,7 +70,6 @@ public class CalorieDetailProvider extends ContentProvider {
         matcher.addURI(authority, FoodContract.PATH_PROFILE + "/*", PROFILE_WITH_USER_ID);// TO CHECK IF THE USER ALREADY EXIST
 
 
-
         return matcher;
 
     }
@@ -84,11 +78,10 @@ public class CalorieDetailProvider extends ContentProvider {
         // normalize the date value
         if (values.containsKey(FoodContract.FoodEntry.COLUMN_DATE)) {
             long dateValue = values.getAsLong(FoodContract.FoodEntry.COLUMN_DATE);
-            values.put(FoodContract.FoodEntry.COLUMN_DATE,FoodContract.normalizeDate(dateValue));
+            values.put(FoodContract.FoodEntry.COLUMN_DATE, FoodContract.normalizeDate(dateValue));
 
         }
     }
-
 
 
     @Override
@@ -100,21 +93,17 @@ public class CalorieDetailProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-                               String sortOrder ) {
+                        String sortOrder) {
         // Here's the switch statement that, given a URI, will determine what kind of request it is,
         // and query the database accordingly.
         Cursor retCursor;
         String user_id = FoodContract.FoodEntry.getUSERIDFromUri(uri);
-        Log.v(":::in query before sw ","query"+user_id);
         switch (sUriMatcher.match(uri)) {
             // "weather/*/*"
-            case FOOD_WITH_USER_AND_DATE:
-            {
+            case FOOD_WITH_USER_AND_DATE: {
                 user_id = FoodContract.FoodEntry.getUSERIDFromUri(uri);
                 //Long date_field = FoodContract.FoodEntry.getDateFromUri(uri);
-                String date_field  = FoodContract.FoodEntry.getDateFromUri(uri);
-                Log.v("inside user id","query"+user_id);
-                Log.v("inside date_field","query"+date_field);
+                String date_field = FoodContract.FoodEntry.getDateFromUri(uri);
                 selection = sFoodByIDAndDate;
                 selectionArgs = new String[]{user_id, date_field};
                 retCursor = mOpenHelper.getReadableDatabase().query(
@@ -129,21 +118,17 @@ public class CalorieDetailProvider extends ContentProvider {
                 );
                 break;
             }
-            case FOOD_WITH_USER_AND_DATE_RANGE:
-            {
+            case FOOD_WITH_USER_AND_DATE_RANGE: {
                 user_id = FoodContract.FoodEntry.getUSERIDFromUri(uri);
                 //Long date_field = FoodContract.FoodEntry.getDateFromUri(uri);
-                String date_field  = FoodContract.FoodEntry.getDateFromUri(uri);
-                String date_field_range  = FoodContract.FoodEntry.getDateRangeFromUri(uri);
-                Log.v("inside user id","query"+user_id);
-                Log.v("inside date_field","startDate::"+date_field);
-                Log.v("inside date_field range","rangeDate::"+date_field_range);
+                String date_field = FoodContract.FoodEntry.getDateFromUri(uri);
+                String date_field_range = FoodContract.FoodEntry.getDateRangeFromUri(uri);
                 selection = sFoodByIDAndDateRange;
                 //selectionArgs = new String[]{user_id, date_field,date_field_range};
                 selectionArgs = new String[]{user_id};
-                sortOrder = FoodContract.FoodEntry.COLUMN_DATE +" ASC";
+                sortOrder = FoodContract.FoodEntry.COLUMN_DATE + " ASC";
 
-                projection= new String[]{"sum(" +FoodContract.FoodEntry.COLUMN_FOOD_CALORIES + ")",FoodContract.FoodEntry.COLUMN_DATE};
+                projection = new String[]{"sum(" + FoodContract.FoodEntry.COLUMN_FOOD_CALORIES + ")", FoodContract.FoodEntry.COLUMN_DATE};
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         FoodContract.FoodEntry.TABLE_NAME,
                         projection,
@@ -155,10 +140,9 @@ public class CalorieDetailProvider extends ContentProvider {
                 );
                 break;
             }
-            // "weather/*"
+
             case FOOD_WITH_USER_ID: {
                 user_id = FoodContract.FoodEntry.getUSERIDFromUri(uri);
-                Log.v("inside food with id ","query"+user_id);
                 selection = sFoodByID;
                 selectionArgs = new String[]{user_id};
                 retCursor = mOpenHelper.getReadableDatabase().query(
@@ -172,10 +156,9 @@ public class CalorieDetailProvider extends ContentProvider {
                 );
                 break;
             }
-            // "weather"
+
             case PROFILE_WITH_USER_ID: {
                 user_id = FoodContract.ProfileList.getProfileIDFromUri(uri);
-                Log.v(":::in profile with id ","query"+user_id);
                 selection = sProfileByID;
                 selectionArgs = new String[]{user_id};
                 retCursor = mOpenHelper.getReadableDatabase().query(
@@ -194,8 +177,6 @@ public class CalorieDetailProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
-        String test = "test";
-        Log.v(":::in profile return ",":::"+test);
         return retCursor;
     }
 
@@ -208,7 +189,7 @@ public class CalorieDetailProvider extends ContentProvider {
         switch (match) {
             // Student: Uncomment and fill out these two cases
             case PROFILE_WITH_USER_ID:
-                return  FoodContract.ProfileList.CONTENT_ITEM_TYPE;
+                return FoodContract.ProfileList.CONTENT_ITEM_TYPE;
             case FOOD_WITH_USER_ID:
                 return FoodContract.FoodEntry.CONTENT_TYPE;
             case FOOD_WITH_USER_AND_DATE:
@@ -231,9 +212,9 @@ public class CalorieDetailProvider extends ContentProvider {
 
         switch (match) {
             case FOOD: {
-              //  normalizeDate(values);
+                //  normalizeDate(values);
                 long _id = db.insert(FoodContract.FoodEntry.TABLE_NAME, null, values);
-                if ( _id > 0 )
+                if (_id > 0)
                     returnUri = FoodContract.FoodEntry.buildFoodUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
@@ -242,7 +223,7 @@ public class CalorieDetailProvider extends ContentProvider {
             case PROFILE: {
 
                 long _id = db.insert(FoodContract.ProfileList.TABLE_NAME, null, values);
-                if ( _id > 0 )
+                if (_id > 0)
                     returnUri = FoodContract.ProfileList.buildProfileUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
@@ -283,7 +264,6 @@ public class CalorieDetailProvider extends ContentProvider {
         }
         return rowsUpdated;
     }
-
 
 
 }
