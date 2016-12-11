@@ -176,7 +176,7 @@ public class SignupActivity extends AppCompatActivity {
 
                     Uri insertedUri = getApplicationContext().getContentResolver().insert(FoodContract.ProfileList.CONTENT_URI, values);
                     Log.v("inserted uri", "value::" + insertedUri.toString());
-                    Toast.makeText(SignupActivity.this, "Added to Favorite", Toast.LENGTH_SHORT)
+                    Toast.makeText(SignupActivity.this, "Profile Created", Toast.LENGTH_SHORT)
                             .show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("username", username);

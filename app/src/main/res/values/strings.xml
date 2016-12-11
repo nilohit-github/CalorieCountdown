@@ -23,7 +23,7 @@
     <string name="radio_female">Female</string>
     <string name="action_create_acct">Create Account</string>
     <string name="Gender">Gender</string>
-    <string name="Weight">Weight</string>
+    <string name="Weight">Weight(Kg)</string>
     <string name="Height">Height</string>
     <string name="Age">Age</string>
     <string name="goal">Goal</string>
@@ -51,6 +51,8 @@
     <string name="SignIn">SignIn to the App</string>
     <string name="SignUp">Create Account</string>
     <string name="SearchFood">Search Food Item</string>
+    <string name="UpdateProfile">Update My Profile</string>
+    <string name="ResetPassword">Reset My Password</string>
 
     <string-array name="question_arrays">
         <item>What is your favourite tv show ?</item>

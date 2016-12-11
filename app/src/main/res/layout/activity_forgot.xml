@@ -43,6 +43,7 @@
                 android:id="@+id/SecurityAnswer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:nextFocusDown="@+id/security_ans_submit_button"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/SecurityQuestion"
                 android:textColor="#212121"

@@ -10,7 +10,9 @@
         android:background="#FFFFFF"
         android:paddingBottom="16dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="com.appguru.android.caloriecountdown.ProfileFragment">
 
@@ -22,7 +24,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="left"
+                android:gravity="end"
                 android:orientation="vertical"
                 >
 
@@ -88,7 +90,7 @@
                         android:text="@string/Weight"
                         android:textSize="20sp"
                         android:layout_marginRight="15dp"
-
+                        android:layout_marginEnd="15dp"
                         android:textStyle="bold"
                         android:textColor="@color/colorAccent"/>
 
@@ -97,6 +99,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/weight"
+                        android:layout_toEndOf="@+id/weight"
                         android:background="#616161"
                         android:gravity="left"
                         android:ems="2"
@@ -126,6 +129,7 @@
                         android:padding="5dp"
                         android:text="@string/Height"
                         android:layout_marginRight="19dp"
+                        android:layout_marginEnd="19dp"
                         android:layout_centerVertical="true"
                         android:textColor="@color/colorAccent"
                         android:textStyle="bold"
@@ -136,8 +140,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="100dp"
                         android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@id/profile_height"
+                        android:layout_toEndOf="@id/profile_height"
                         android:solidColor="#616161"
                         android:soundEffectsEnabled="true"
                         android:background="@color/colorAccent"
@@ -149,7 +155,7 @@
                         android:id="@+id/npInch"
                         android:layout_width="wrap_content"
                         android:layout_height="100dp"
-
+                        android:layout_toEndOf="@id/npFeet"
                         android:layout_toRightOf="@id/npFeet"
                         android:soundEffectsEnabled="true"
                         android:background="@color/colorAccent"
@@ -176,6 +182,7 @@
                         android:padding="5dp"
                         android:text="@string/Age"
                         android:layout_marginRight="43dp"
+                        android:layout_marginEnd="43dp"
                         android:layout_marginBottom="10dp"
 
                         android:textColor="@color/colorAccent"
@@ -188,6 +195,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/Age"
+                        android:layout_toEndOf="@+id/Age"
                         android:background="#616161"
                         android:maxLength="3"
                         android:inputType="number"
@@ -266,7 +274,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:text="@string/action_update_profile"
-
+                        android:contentDescription="@string/UpdateProfile"
                         android:textStyle="bold"
                         android:padding="15dp"
                         android:layout_centerHorizontal="true"

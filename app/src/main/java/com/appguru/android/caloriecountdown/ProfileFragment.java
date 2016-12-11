@@ -365,7 +365,7 @@ public class ProfileFragment extends Fragment implements LoaderManager.LoaderCal
 
 
                   //  Log.v("inserted uri", "value::" + insertedUri.toString());
-                    Toast.makeText(getActivity(), "Added to Favorite", Toast.LENGTH_SHORT)
+                    Toast.makeText(getActivity(), "Profile updated", Toast.LENGTH_SHORT)
                             .show();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("username", username);

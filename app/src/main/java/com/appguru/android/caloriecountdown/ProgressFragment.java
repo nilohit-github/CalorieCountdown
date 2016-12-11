@@ -221,9 +221,9 @@ public class ProgressFragment extends Fragment implements LoaderManager.LoaderCa
             yVals.add(new Entry((mCalList.get(i)),i));
         }
 
-        LineDataSet dataSet = new LineDataSet(yVals, "Close");
+        LineDataSet dataSet = new LineDataSet(yVals, "Calories per day");
         LineData lineData = new LineData(xVals, dataSet);
-        lineChart.setDescription("Closing values over time");
+        lineChart.setDescription("Calories consumed on daily basis");
         dataSet.setDrawFilled(true);
         lineChart.setData(lineData);
         lineChart.setBackgroundColor(getResources().getColor(R.color.material_blue_lightest));

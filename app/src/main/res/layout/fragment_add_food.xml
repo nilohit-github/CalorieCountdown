@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint=""
-            android:gravity="left"
+            android:gravity="start"
             android:ems="8"
             android:maxLength="15"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -78,6 +78,7 @@
                 android:scaleType="fitXY"
                 android:id="@+id/attribution"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginBottom="15dp"
                 android:elevation="4dp"
                 android:src="@drawable/attribution_jqfdgy"/>
