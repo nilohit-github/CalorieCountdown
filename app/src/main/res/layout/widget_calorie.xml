@@ -9,8 +9,7 @@
         android:id="@+id/widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/touch_selector_white"
-        android:padding="8dp">
+        android:background="@drawable/touch_selector_white">
 
         <ImageView
             android:id="@+id/widget_icon"
@@ -32,21 +31,23 @@
                 android:id="@+id/widget_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
                 android:fontFamily="sans-serif"
+                android:textSize="12sp"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="@color/colorAccent"
-                tools:text="48" />
+                android:textColor="@color/colorAccent"/>
+
 
             <TextView
                 android:id="@+id/widget_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="5dp"
                 android:fontFamily="sans-serif"
+                android:layout_weight="1"
                 android:textAppearance="?android:textAppearanceLarge"
-                android:textColor="@color/colorAccent"
-                tools:text="28" />
+                android:textColor="@color/colorAccent" />
         </LinearLayout>
     </RelativeLayout>
 </FrameLayout>

@@ -53,6 +53,8 @@
     <string name="SearchFood">Search Food Item</string>
     <string name="UpdateProfile">Update My Profile</string>
     <string name="ResetPassword">Reset My Password</string>
+    <string name="MacroNutrient">This is macro fargment</string>
+    <string name="new_password">Enter new Password</string>
 
     <string-array name="question_arrays">
         <item>What is your favourite tv show ?</item>

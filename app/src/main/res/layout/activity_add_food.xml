@@ -15,7 +15,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_weight="7"
         android:id="@+id/selected_food"
         android:textSize="16sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -28,7 +27,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="7"
         android:layout_below="@+id/selected_food"
         android:id="@+id/tot_cal"
         android:textSize="12sp"
@@ -44,7 +42,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tot_cal"
-        android:layout_weight="7"
         android:id="@+id/tot_fat"
         android:textSize="12sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -59,7 +56,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tot_fat"
-        android:layout_weight="7"
         android:id="@+id/tot_protein"
         android:textSize="12sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -74,7 +70,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="7"
         android:id="@+id/tot_carbs"
         android:textSize="12sp"
         android:layout_below="@+id/tot_protein"

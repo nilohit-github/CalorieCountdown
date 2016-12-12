@@ -173,9 +173,8 @@ public class MacronutrientFragment extends Fragment implements LoaderManager.Loa
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
         int j = cursor.getCount();
-        if (j == 0) {
-
-        } else {
+        if (j != 0)
+        {
 
             while (cursor.moveToNext()) {
                 totalCarbsConsumed = totalCarbsConsumed + (cursor.getFloat(cursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_CARBS)));

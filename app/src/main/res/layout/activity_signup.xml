@@ -326,7 +326,6 @@
                     android:background="#616161"
                     android:ems="10"
                     android:maxLength="20"
-
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789">
 
 

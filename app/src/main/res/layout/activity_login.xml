@@ -61,7 +61,7 @@
                     android:textColor="#212121"
                     android:imeOptions="actionDone"
                     android:maxLines="1"
-                    android:maxLength="25"
+                    android:maxLength="50"
                     android:nextFocusDown="@+id/password"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@_."
                     android:singleLine="true" />

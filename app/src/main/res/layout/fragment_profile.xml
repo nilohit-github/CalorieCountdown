@@ -101,7 +101,7 @@
                         android:layout_toRightOf="@+id/weight"
                         android:layout_toEndOf="@+id/weight"
                         android:background="#616161"
-                        android:gravity="left"
+                        android:gravity="start"
                         android:ems="2"
                         android:maxLength="3"
                         android:inputType="number" >

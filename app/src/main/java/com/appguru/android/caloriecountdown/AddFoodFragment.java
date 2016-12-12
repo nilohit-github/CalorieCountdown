@@ -29,7 +29,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.plus.PlusOneButton;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -55,7 +55,6 @@ public class AddFoodFragment extends Fragment implements LoaderManager.LoaderCal
     private String mParam1;
     private String mParam2;
     private static final int CALORIE_LOADER = 0;
-    private PlusOneButton mPlusOneButton;
     private Button btnDisplay;
     private Boolean internetAvailable;
     private EditText mEditFood;

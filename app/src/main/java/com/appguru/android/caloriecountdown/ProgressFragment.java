@@ -143,9 +143,8 @@ public class ProgressFragment extends Fragment implements LoaderManager.LoaderCa
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor1) {
 
         int j = cursor1.getCount();
-        if (j == 0) {
-
-        } else {
+        if (j != 0)
+        {
             int day_count = 1;
             while (cursor1.moveToNext()) {
                 // total_cal = (cursor1.getFloat(cursor1.getColumnIndex(FoodContract.FoodEntry.COLUMN_FOOD_CALORIES)));
